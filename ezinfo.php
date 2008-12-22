@@ -29,7 +29,7 @@ class eZFluxBBInfo
         return array(    'Name'                  => "eZFluxBB",
                          'Version'               => "1.0",
                          'Copyright'             => "Copyright (c) 2008 Guillaume Kulakowski and contributors",
-                         'info_url'              => "http://trac.llaumgui.com/wiki/eZ%20Publish/eZFluxBB",
+                         'info_url'              => "http://projects.ez.no/ezfluxbb",
                          'License'               => "GNU General Public License v2.0"
                     );
     }
