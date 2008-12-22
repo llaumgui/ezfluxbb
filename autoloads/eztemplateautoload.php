@@ -4,7 +4,7 @@
 //
 // SOFTWARE NAME: eZFluxBB
 // SOFTWARE RELEASE: 1.0
-// BUILD VERSION: 
+// BUILD VERSION:
 // COPYRIGHT NOTICE: Copyright (c) 2008 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
 // NOTICE: >

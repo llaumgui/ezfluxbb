@@ -52,13 +52,13 @@ class eZFluxBBDB
         /* Même BD */
         if ( $this->compareEz2FluxDB() )
         {
-            eZDebug::writeNotice( '[eZFluxBBDB] FluxBB and eZ Publish use the same database.' );
+            eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish use the same database', 'eZFluxBBDB' );
             $impl = eZDB::instance();
         }
         /* BD différentes */
         else
         {
-            eZDebug::writeNotice( '[eZFluxBBDB] FluxBB and eZ Publish don\'t use the same database !' );
+            eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish don\'t use the same database', 'eZFluxBBDB'  );
             $ezFluxIni = eZFluxBB::instance();
             $params = array('server'                        => $ezFluxIni->fluxBBConfig['db_host'],
                             'user'                          => $ezFluxIni->fluxBBConfig['db_username'],
@@ -100,7 +100,7 @@ class eZFluxBBDB
             $db = eZDB::instance();
             if ( strtolower($db->charset()) == strtolower($ezFluxIni->fluxBBConfig['db_charset']) )
             {
-                eZDebug::writeNotice( '[eZFluxBBDB] FluxBB and eZ Publish are 2 differents charset !' );
+                eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish are 2 differents charset !', 'eZFluxBBDB' );
                 return false;
             }
             return true;
