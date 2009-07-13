@@ -63,18 +63,22 @@ class eZFluxBB
      */
     static function instance()
     {
-        $impl = &$GLOBALS["eZFluxBBGlobalInstance"];
-
         $eZFluxBBIni = eZINI::instance( "ezfluxbb.ini" );
         $version = $eZFluxBBIni->variable( "FluxBBInfo", "Version" );
         $classVersion = 'eZFluxBB' . str_replace( '.', '', $version );
-        $class = get_class( $impl );
 
-        if ( $class != $classVersion)
+        $globalsKey = "eZFluxBBGlobalInstance-$version";
+        $globalsIsLoadedKey = "eZFluxBBGlobalIsLoaded-$version";
+
+        if ( !isset( $GLOBALS[$globalsKey] ) ||
+            !( $GLOBALS[$globalsKey] instanceof $classVersion ) )
         {
-            $impl = new $classVersion();
+
+            $GLOBALS[$globalsIsLoadedKey] = false;
+            $GLOBALS[$globalsKey] = new $classVersion();;
+            $GLOBALS[$globalsIsLoadedKey] = true;
         }
-        return $impl;
+        return $GLOBALS[$globalsKey];
     }
 
 

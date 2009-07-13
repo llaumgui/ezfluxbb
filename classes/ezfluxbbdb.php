@@ -117,16 +117,18 @@ class eZFluxBBDB
      */
     static function instance()
     {
-        $impl = &$GLOBALS["eZFluxBBDBGlobalInstance"];
-        $class = get_class( $impl );
-
-        if ( !( $impl instanceof eZDBInterface ) )
+        $globalsKey = "eZFluxBBDBGlobalInstance";
+        $globalsIsLoadedKey = "eZFluxBBDBGlobalIsLoaded";
+        if ( !isset( $GLOBALS[$globalsKey] ) ||
+            !( $GLOBALS[$globalsKey] instanceof eZDBInterface ) )
         {
-            new eZFluxBBDB( $impl );
+            $GLOBALS[$globalsIsLoadedKey] = false;
+            new eZFluxBBDB( $GLOBALS[$globalsKey] );
+            $GLOBALS[$globalsIsLoadedKey] = true;
         }
-
-        return $impl;
+        return $GLOBALS[$globalsKey];
     }
+
 
 } // EOC
 
