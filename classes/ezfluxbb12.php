@@ -227,6 +227,6 @@ class eZFluxBB12 extends eZFluxBB
         return $password;
     }
 
-} // EOC
+}
 
 ?>

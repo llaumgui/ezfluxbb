@@ -130,6 +130,6 @@ class eZFluxBBDB
     }
 
 
-} // EOC
+}
 
 ?>

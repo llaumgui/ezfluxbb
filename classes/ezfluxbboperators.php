@@ -82,6 +82,6 @@ class eZFluxBBOperators
         }
     }
 
-} // EOC
+}
 
 ?>

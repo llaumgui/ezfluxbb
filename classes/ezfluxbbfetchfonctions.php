@@ -152,6 +152,6 @@ class eZFluxBBFetchFonctions
         return array( 'result' => $eZFluxBB->getTopics( $params ) );
     }
 
-}   // EOC
+}
 
 ?>
