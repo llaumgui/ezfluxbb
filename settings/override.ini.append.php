@@ -28,6 +28,11 @@ Subdir=templates
 Match[type]=ezFluxBBTopics
 Match[view]=list
 
-
+[block_ezFluxBBTopics_list_compact]
+Source=block/view/view.tpl
+MatchFile=block/ezfluxbb_listtopic_compact.tpl
+Subdir=templates
+Match[type]=ezFluxBBTopics
+Match[view]=list_compact
 
 */ ?>
