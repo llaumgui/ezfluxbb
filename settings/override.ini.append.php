@@ -5,14 +5,14 @@ Source=block/view/view.tpl
 MatchFile=block/ezfluxbb_stats.tpl
 Subdir=templates
 Match[type]=ezFluxBBStats
-Match[view]=ezFluxBBStats
+Match[view]=ezfluxbb_stats
 
 [block_ezFluxBBOnline_ezFluxBBOnline]
 Source=block/view/view.tpl
 MatchFile=block/ezfluxbb_online.tpl
 Subdir=templates
 Match[type]=ezFluxBBOnline
-Match[view]=ezFluxBBOnline
+Match[view]=ezfluxbb_online
 
 [block_ezFluxBBTopics_list_description]
 Source=block/view/view.tpl

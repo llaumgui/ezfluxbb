@@ -10,8 +10,8 @@ AllowedTypes[]=ezFluxBBTopics
 Name=[ezFluxBB] Stats
 ManualAddingOfItems=disabled
 CustomAttributes[]
-ViewList[]=ezFluxBBStats
-ViewName[ezFluxBBStats]=[ezFluxBB] Stats
+ViewList[]=ezfluxbb_stats
+ViewName[ezfluxbb_stats]=[ezFluxBB] Stats
 TTL=300
 
 
@@ -19,8 +19,8 @@ TTL=300
 Name=[ezFluxBB] Online
 ManualAddingOfItems=disabled
 CustomAttributes[]
-ViewList[]=ezFluxBBOnline
-ViewName[ezFluxBBOnline]=[ezFluxBB] Online
+ViewList[]=ezfluxbb_online
+ViewName[ezfluxbb_online]=[ezFluxBB] Online
 TTL=300
 
 
