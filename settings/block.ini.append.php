@@ -3,6 +3,7 @@
 [General]
 AllowedTypes[]=ezFluxBBStats
 AllowedTypes[]=ezFluxBBOnline
+AllowedTypes[]=ezFluxBBTopics
 
 
 [ezFluxBBStats]
@@ -11,6 +12,7 @@ ManualAddingOfItems=disabled
 CustomAttributes[]
 ViewList[]=ezFluxBBStats
 ViewName[ezFluxBBStats]=[ezFluxBB] Stats
+TTL=300
 
 
 [ezFluxBBOnline]
@@ -19,5 +21,27 @@ ManualAddingOfItems=disabled
 CustomAttributes[]
 ViewList[]=ezFluxBBOnline
 ViewName[ezFluxBBOnline]=[ezFluxBB] Online
+TTL=300
+
+
+[ezFluxBBTopics]
+Name=[ezFluxBB] Topics
+ManualAddingOfItems=disabled
+TTL=300
+
+CustomAttributes[]
+CustomAttributes[]=id_forums
+CustomAttributes[]=limit_topics
+CustomAttributes[]=limit_characters
+CustomAttributes[]=id_css
+
+ViewList[]
+ViewList[]=list_compact
+ViewList[]=list
+ViewList[]=list_description
+ViewName[]
+ViewName[list_compact]=List compact of topic
+ViewName[list]=List of topic
+ViewName[list_description]=List of topic with description
 
 */ ?>
