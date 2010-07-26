@@ -2,12 +2,13 @@
 //
 // Definition of eZFluxBBDB class
 //
-// Created on: <01-Sep-2008 19:00:00 bf>
+// Created on: <01-Sep-2008 19:00:00 gkul>
 //
+// ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.0
+// SOFTWARE RELEASE: 1.1
 // BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008 Guillaume Kulakowski and contributors
+// COPYRIGHT NOTICE: Copyright (c) 2008-2010 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
 // NOTICE: >
 //   This program is free software; you can redistribute it and/or
@@ -25,6 +26,8 @@
 //   MA 02110-1301, USA.
 //
 //
+// ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
+//
 
 
 /*! \file ezfluxbbdb.php
@@ -32,30 +35,25 @@
 
 /*!
   \class eZFluxBBDB ezfluxbbdb.php
-  \brief Interconnection des base eZ Publish / FluxBB
-
-\verbatim
-eZFluxBBDB détermine si eZFluxBB doit récupérer la connection DB d'eZ Publish ou en ouvrir une autre au cas ou ez
-Et FluxBB soient sur 2 base (voir 2 serveurs) différents.
-\endverbatim
+  \brief Interconnection between eZ Publish and FluxBB databases
  */
 class eZFluxBBDB
 {
 
-    /*!
-     Constructeur
-
-     \param $impl object
+    /**
+     * Constructor
+     *
+     * @param object $impl
      */
     private function __construct( &$impl)
     {
-        /* Même BD */
+        /* Same DB */
         if ( $this->compareEz2FluxDB() )
         {
             eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish use the same database', 'eZFluxBBDB' );
             $impl = eZDB::instance();
         }
-        /* BD différentes */
+        /* Different DB */
         else
         {
             eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish don\'t use the same database', 'eZFluxBBDB'  );
@@ -74,10 +72,10 @@ class eZFluxBBDB
 
 
 
-    /*!
-     Compare les paramètres de connexions de Flux et eZ
-
-     \return boolean
+    /**
+     * Compare FluxBB and eZ databases connection parameters
+     *
+     * @return boolean
      */
     private function compareEz2FluxDB()
     {
@@ -110,10 +108,10 @@ class eZFluxBBDB
 
 
 
-    /*!
-     Fonction d'instanciation
-
-     \return instance DB
+    /**
+     * Instanciation
+     *
+     * @return eZDBInterface
      */
     static function instance()
     {
@@ -128,7 +126,6 @@ class eZFluxBBDB
         }
         return $GLOBALS[$globalsKey];
     }
-
 
 }
 

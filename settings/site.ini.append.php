@@ -3,4 +3,7 @@
 [TemplateSettings]
 ExtensionAutoloadPath[]=ezfluxbb
 
+[RegionalSettings]
+TranslationExtensions[]=ezfluxbb
+
 */ ?>

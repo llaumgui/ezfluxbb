@@ -2,12 +2,13 @@
 //
 // Definition of eZFluxBBFetchFonctions class
 //
-// Created on: <01-Sep-2008 19:00:00 bf>
+// Created on: <01-Sep-2008 19:00:00 gkul>
 //
+// ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.0
+// SOFTWARE RELEASE: 1.1
 // BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008 Guillaume Kulakowski and contributors
+// COPYRIGHT NOTICE: Copyright (c) 2008-2010 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
 // NOTICE: >
 //   This program is free software; you can redistribute it and/or
@@ -25,6 +26,8 @@
 //   MA 02110-1301, USA.
 //
 //
+// ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
+//
 
 
 /*! \file ezfluxbbfetchfonctions.php
@@ -32,15 +35,15 @@
 
 /*!
   \class eZFluxBBFetchFonctions ezfluxbbfetchfonctions.php
-  \brief Classe regroupant les fonctions fetch d'eZFluxBB
+  \brief Fetch functionsd for eZFluxBB
  */
 class eZFluxBBFetchFonctions
 {
 
-    /*!
-     Fonction fetch permettant de retourner les informations sur l'utilisateur FluxBB courrant
-
-     \return array
+    /**
+     * Get informations about current FluxBB user
+     *
+     * @return array
      */
     function fetchCurrentUser()
     {
@@ -52,10 +55,10 @@ class eZFluxBBFetchFonctions
 
 
 
-    /*!
-     Fonction fetch permettant de retourner les statistique sur la board.
-
-     \return array
+    /**
+     * Get informations about FluxBB stats
+     *
+     * @return array
      */
     function fetchStats()
     {
@@ -66,10 +69,10 @@ class eZFluxBBFetchFonctions
 
 
 
-    /*!
-     Fonction fetch permettant de retourner les statistique sur la board.
-
-     \return array
+    /**
+     * Get informations about online users
+     *
+     * @return array
      */
     function fetchOnline()
     {
@@ -80,17 +83,18 @@ class eZFluxBBFetchFonctions
 
 
 
-    /*!
-     Permet de récupérer les information sur les topics en fonction des arguments.
-     \param $forum_id_filter_type string
-     \param $forum_id_filter_array mixed
-     \param $limit integer
-     \param $offset integer
-     \param $sort_by array
-     \param $group_id integer
-     \param $get_first_message boolean
-
-     \return array
+    /**
+     * Get topics information function of argument
+     *
+     * @param string $forum_id_filter_type
+     * @param mixed$ forum_id_filter_array
+     * @param integer $limit
+     * @param integer $offset
+     * @param array $sort_by
+     * @param integer $group_id
+     * @param boolean $get_first_message
+     *
+     * @return array
      */
     function fetchTopics( $forum_id_filter_type, $forum_id_filter_array, $limit, $offset, $sort_by, $group_id, $get_first_message )
     {

@@ -1,8 +1,8 @@
 <?php
 //
-// Definition of eZFluxBB12 class
+// Definition of eZFluxBB14 class
 //
-// Created on: <01-Sep-2008 19:00:00 gkul>
+// Created on: <26-Jul-2010 09:00:00 gkul>
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
@@ -30,14 +30,14 @@
 //
 
 
-/*! \file ezfluxbb12.php
+/*! \file ezfluxbb14.php
 */
 
 /*!
-  \class eZFluxBB12 ezfluxbb12.php
+  \class eZFluxBB14 ezfluxbb14.php
   \brief FluxBB functions in eZ Publish. Specific to FluxBB 1.2.
  */
-class eZFluxBB12 extends eZFluxBB
+class eZFluxBB14 extends eZFluxBB
 {
 
 }
