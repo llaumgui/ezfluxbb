@@ -40,6 +40,9 @@
 class eZFluxBBDB
 {
 
+	public static $db_supported = array('mysql', 'mysql_innodb', 'mysqli', 'mysqli_innodb');
+
+
     /**
      * Constructor
      *
@@ -65,8 +68,11 @@ class eZFluxBBDB
                             'use_persistent_connection'     => $ezFluxIni->fluxBBConfig['p_connect'],
                             'show_errors'                   => true,
                            );
+            // Remove extended information like _innodb
+            $dbType = explode( '_', $ezFluxIni->fluxBBConfig['db_type'] );
+            $dbType = $dbType[0];
 
-            $impl = eZDB::instance( 'ez'.$ezFluxIni->fluxBBConfig['db_type'], $params, true );
+            $impl = eZDB::instance( 'ez'.$dbType, $params, true );
         }
     }
 
@@ -88,6 +94,9 @@ class eZFluxBBDB
                                             'Password'      => 'Password',
                                             'Database'      => 'Database'
                                 ) );
+
+        if ( !in_array( $ezFluxIni->fluxBBConfig['db_type'], self::$db_supported ) )
+            throw new Exception('FluxBB database implementation not supported in eZFluxBB: ' . $ezFluxIni->fluxBBConfig['db_type']);
 
         if ( $ezDBIni['Server'] == $ezFluxIni->fluxBBConfig['db_host']
           && $ezDBIni['User'] == $ezFluxIni->fluxBBConfig['db_username']
