@@ -2,7 +2,7 @@
 
 [FluxBBInfo]
 # FluxBB / PunBB version
-Version=1.2
+Version=1.4
 
 # Path to your FluxBB board
 Path=./path_to/fluxBB

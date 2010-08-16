@@ -40,6 +40,18 @@
 class eZFluxBB12 extends eZFluxBB
 {
 
+    /**
+     * Convert bbCode to HTML
+     *
+     * @param string &$str bbCode to convert
+     */
+    public function bbCode2HTML( &$str )
+    {
+        if ( !function_exists( 'do_bbcode' ) ) {
+            require_once PUN_ROOT . 'include/parser.php';
+        }
+        $str = do_bbcode( $str );
+    }
 }
 
 ?>

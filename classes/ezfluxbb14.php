@@ -39,7 +39,29 @@
  */
 class eZFluxBB14 extends eZFluxBB
 {
+    /**
+     * Convert bbCode to HTML
+     *
+     * @param string &$str bbCode to convert
+     */
+    public function bbCode2HTML( &$str )
+    {
+    	global $re_list;
 
+    	if ( !function_exists( 'pun_trim' ) )
+    	{
+            function pun_trim($str)
+            {
+                return utf8_trim($str);
+            }
+        }
+        if ( !function_exists( 'do_bbcode' ) )
+            require_once PUN_ROOT . 'include/parser.php';
+        if ( !function_exists( 'utf8_trim' ) )
+            require_once PUN_ROOT . 'include/utf8/trim.php';
+
+        $str = do_bbcode( $str );
+    }
 }
 
 ?>

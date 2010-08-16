@@ -48,12 +48,14 @@ class eZFluxBB
     /**
      * Constructor
      */
-    function __construct()
+    protected function __construct()
     {
         $this->getConfig( $this->fluxBBConfig );
 
+
         /* Constant needed by FluxBB */
         define( 'PUN_ROOT', $this->fluxBBInfo['Path'] );
+        define( 'FORUM_CACHE_DIR', PUN_ROOT.'cache/' );
     }
 
 
@@ -67,7 +69,7 @@ class eZFluxBB
      *
      * @return eZFluxBB
      */
-    static function instance()
+    public static function instance()
     {
         $eZFluxBBIni = eZINI::instance( "ezfluxbb.ini" );
         $version = $eZFluxBBIni->variable( "FluxBBInfo", "Version" );
@@ -123,21 +125,6 @@ class eZFluxBB
                             'cookie_seed'       => $cookie_seed,
                             'version'           => $this->fluxBBInfo['Version']
                         );
-    }
-
-
-
-    /**
-     * Convert bbCode to HTML
-     *
-     * @param string &$str bbCode to convert
-     */
-    function bbCode2HTML( &$str )
-    {
-        if ( !function_exists( 'do_bbcode' ) ) {
-            require_once PUN_ROOT . 'include/parser.php';
-        }
-        $str = do_bbcode( $str );
     }
 
 
@@ -299,7 +286,7 @@ class eZFluxBB
      *
      * @param array &$fluxUser
      */
-    function checkCookie( &$fluxUser )
+    protected function checkCookie( &$fluxUser )
     {
         $now = time();
         $expire = $now + 31536000;    // The cookie expires after a year
@@ -315,11 +302,10 @@ class eZFluxBB
             // Check if there's a user with the user ID and password hash from the cookie
             $db = eZFluxBBDB::instance();
             $fluxUser = $db->arrayQuery(
-                'SELECT u.*, g.*, o.logged, o.idle, COUNT(pm.id) AS total_pm ' .
+                'SELECT u.*, g.*, o.logged, o.idle ' .
                 'FROM '.$this->fluxBBConfig['db_prefix'].'users AS u ' .
                     'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'groups AS g ON u.group_id=g.g_id ' .
                     'LEFT JOIN '.$this->fluxBBConfig['db_prefix'].'online AS o ON o.user_id=u.id ' .
-                    'LEFT JOIN '.$this->fluxBBConfig['db_prefix'].'messages AS pm ON pm.owner=u.id ' .
                 'WHERE u.id='.intval($this->fluxBBCookie['user_id']).' ' .
                 'GROUP BY u.id');
 
@@ -342,7 +328,7 @@ class eZFluxBB
             if (!$fluxUser['disp_posts'])
                 $fluxUser['disp_posts'] = $pun_config['o_disp_posts_default'];*/
 
-            if ($fluxUser['save_pass'] == '0')
+            if ( array_key_exists('save_pass', $fluxUser) && $fluxUser['save_pass'] == '0' )
             {
                 $expire = 0;
             }
