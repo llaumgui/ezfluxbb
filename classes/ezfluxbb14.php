@@ -48,17 +48,12 @@ class eZFluxBB14 extends eZFluxBB
     {
     	global $re_list;
 
-    	if ( !function_exists( 'pun_trim' ) )
-    	{
-            function pun_trim($str)
-            {
-                return utf8_trim($str);
-            }
-        }
         if ( !function_exists( 'do_bbcode' ) )
             require_once PUN_ROOT . 'include/parser.php';
-        if ( !function_exists( 'utf8_trim' ) )
-            require_once PUN_ROOT . 'include/utf8/trim.php';
+        if ( !function_exists( 'pun_htmlspecialchars' ) )
+            require_once PUN_ROOT . 'include/functions.php';
+        if (!defined('UTF8'))
+            require_once PUN_ROOT . 'include/utf8/utf8.php';
 
         $str = do_bbcode( $str );
     }
