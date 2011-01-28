@@ -24,7 +24,7 @@
 <ul>
 	{foreach $topics as $t}
 		<li>
-            <a title="{$t.forum_name|wash()} : {$t.topic_name|wash()}" href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/viewtopic.php?id={$t.topic_id}">{$t.topic_name|wash()}</a></td>
+            <a title="{$t.forum_name|wash()} : {$t.topic_name|wash()}" href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/viewtopic.php?id={$t.topic_id}">{$t.topic_name|wash()}</a>
 		</li>
 	{/foreach}
 {undef $topics}
