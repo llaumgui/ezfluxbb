@@ -6,7 +6,7 @@ Requirements:
 
 
 Installing:
-1. Extract the eZFluxBB extension, and place it in the extensions folder. 
+1. Extract the eZFluxBB extension, and place it in the extensions folder.
 
 2. Enable the extension in eZ Publish. Do this by opening settings/override/site.ini.append.php ,
    and add in the [ExtensionSettings] block:
@@ -18,6 +18,5 @@ Installing:
 
 
 Configuration:
-
 - Configuring eZFluxBB :
   See extension/eZfluxbb/settings/eZfluxbb.ini.append.php for options.
