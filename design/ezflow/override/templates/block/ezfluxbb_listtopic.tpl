@@ -1,5 +1,5 @@
 <!-- BLOCK: START -->
-<div class="block-type-ezfluxbb-online">
+<div class="block-type-ezfluxbb-listtopic">
 
 <div class="border-box block-style1-box-outside">
 <div class="border-tl"><div class="border-tr"><div class="border-tc"></div></div></div>
@@ -15,14 +15,14 @@
 
 <!-- BLOCK CONTENT: START -->
 
-<h3><span>{$block.name|wash()}</span></h3>
+<h2>{$block.name|wash()}</h2>
 <div class="content pun">
 {def $topics = fetch( 'ezfluxbb', 'topics', hash(
     group_id, 3,
 	limit, $block.custom_attributes.limit_topics,
 	sort_by, array('last_post_published', false()) ) )
 }
-	<table cellspacing="0" summary="{$block.name|wash()}">
+	<table cellspacing="0" summary="{$block.name|wash()}" class="list">
 		<thead>
 			<tr>
                 <th class="tcl" scope="col">{"Forums"|i18n("design/ezfluxbb/topics")}</th>
@@ -37,7 +37,7 @@
 				<td class="tcl"><a title="{"Forum:"|i18n("design/ezfluxbb/topics")} {$t.forum_name|wash()}" href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/viewforum.php?id={$t.forum_id}">{$t.forum_name|wash()}</a></td>
 				<td class="tcr"><a title="{$t.forum_name|wash()} : {$t.topic_name|wash()}" href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/viewtopic.php?id={$t.topic_id}">{$t.topic_name|wash()}</a></td>
 				<td class="tc3">{$t.num_replies}</td>
-				<td class="tcr"><a title="{$t.forum_name|wash()} : {"go to last discussion"|i18n("design/ezfluxbb/topics")}" href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/viewtopic.php?pid={$t.last_post_id}#p{$t.last_post_id}">{$t.last_post_published|related_datetime('r_FluxBB')}</a> {"by"|i18n("design/ezfluxbb/topics")} {$t.last_post_creator|wash()}</td>
+				<td class="tcr"><a title="{$t.forum_name|wash()} : {"go to last discussion"|i18n("design/ezfluxbb/topics")}" href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/viewtopic.php?pid={$t.last_post_id}#p{$t.last_post_id}">{$t.last_post_published|l10n(shortdatetime)}</a> {"by"|i18n("design/ezfluxbb/topics")} {$t.last_post_creator|wash()}</td>
 			</tr>
 		</tbody>
 	{/foreach}

@@ -1,14 +1,14 @@
 <!-- BLOCK: START -->
-<div class="block-type-ezfluxbb-online">
+<div class="block-type-ezfluxbb-listtopic block-type-ezfluxbb-listtopic-compact">
 
-<div class="border-box block-style1-box-outside">
+<div class="border-box block-style2-box-outside">
 <div class="border-tl"><div class="border-tr"><div class="border-tc"></div></div></div>
 <div class="border-ml"><div class="border-mr"><div class="border-mc">
 <div class="border-content">
 
 <!-- BLOCK BORDER INSIDE: START -->
 
-<div class="border-box block-style1-box-inside">
+<div class="border-box block-style2-box-inside">
 <div class="border-tl"><div class="border-tr"><div class="border-tc"></div></div></div>
 <div class="border-ml"><div class="border-mr"><div class="border-mc">
 <div class="border-content">

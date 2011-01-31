@@ -2,13 +2,13 @@
 //
 // Definition of eZFluxBB class
 //
-// Created on: <01-Sep-2008 19:00:00 gkul>
+// Created on: <01-Sep-2008 19:00:00 llaumgui>
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
 // SOFTWARE RELEASE: 1.1
 // BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008-2010 Guillaume Kulakowski and contributors
+// COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
 // NOTICE: >
 //   This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ class eZFluxBB
 
 
         /* Constant needed by FluxBB */
-        define( 'PUN_ROOT', $this->fluxBBInfo['Path'] );
+        define( 'PUN_ROOT', $this->fluxBBInfo['Path'] . '/' );
         define( 'FORUM_CACHE_DIR', PUN_ROOT.'cache/' );
     }
 
@@ -108,7 +108,7 @@ class eZFluxBB
                                    "Version"   => $fluxBBInfo['Version']
                                     );
 
-        require $this->fluxBBInfo['Path'] . 'config.php';
+        require $this->fluxBBInfo['Path'] . '/config.php';
 
         $config = array(    'db_type'           => $db_type,
                             'db_host'           => $db_host,
