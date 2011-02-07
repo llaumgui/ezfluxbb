@@ -2,7 +2,7 @@
 
 [FluxBBInfo]
 # FluxBB / PunBB version
-Version=1.4
+Version=1.4.4
 
 # Path to your FluxBB board
 Path=./path_to/fluxBB
@@ -13,6 +13,6 @@ BoardURL=http://www.exemple.com
 
 [DataBase]
 # DB's Charset.
-Charset=iso-8859-1
+Charset=utf-8
 
 */ ?>
