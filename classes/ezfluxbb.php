@@ -73,7 +73,9 @@ class eZFluxBB
     {
         $eZFluxBBIni = eZINI::instance( "ezfluxbb.ini" );
         $version = $eZFluxBBIni->variable( "FluxBBInfo", "Version" );
-        $classVersion = 'eZFluxBB' . str_replace( '.', '', $version );
+
+        // With version = x.y.z, call class eZFluxBBxy
+        $classVersion = 'eZFluxBB' . substr( str_replace( '.', '', $version ), 0, 2 );
 
         $globalsKey = "eZFluxBBGlobalInstance-$version";
         $globalsIsLoadedKey = "eZFluxBBGlobalIsLoaded-$version";
