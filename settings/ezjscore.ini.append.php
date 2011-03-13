@@ -6,6 +6,5 @@ FunctionList[]=ezfluxbb
 [ezjscServer_ezfluxbb]
 Class=ezjscoreFluxBBServerCallFunctions
 File=extension/ezfluxbb/classes/ezjscorefluxbbservercallfunctions.php
-Functions[]=ezfluxbb
 
 */ ?>
