@@ -33,7 +33,6 @@ CustomAttributes[]
 CustomAttributes[]=id_forums
 CustomAttributes[]=limit_topics
 CustomAttributes[]=limit_characters
-CustomAttributes[]=sort_by
 CustomAttributes[]=id_css
 
 ViewList[]
