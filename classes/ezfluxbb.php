@@ -235,7 +235,7 @@ class eZFluxBB
         if ( $params['get_first_message'] )
         {
             $select .= ', p.id post_id, p.message';
-            $leftJoin[] = 'LEFT JOIN '.$this->fluxBBConfig['db_prefix'].'posts p ON (p.topic_id=t.id AND t.posted = p.posted)';
+            $innerJoin[] = 'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'posts p ON (p.topic_id=t.id AND t.posted = p.posted)';
         }
 
         if ( count($where) > 0 )
