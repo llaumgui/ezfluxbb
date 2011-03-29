@@ -234,8 +234,14 @@ class eZFluxBB
         /* join with post */
         if ( $params['get_first_message'] )
         {
+        	// Use 1.4.0 first_post_id and index
+            if ( version_compare( $this->fluxBBInfo['Version'], '1.4.0') >= 0)
+	             $joinOn = 'p.topic_id=t.id AND p.id=t.first_post_id';
+	        else
+	            $joinOn = 'p.topic_id=t.id AND p.posted=t.posted';
+
             $select .= ', p.id post_id, p.message';
-            $innerJoin[] = 'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'posts p ON (p.topic_id=t.id AND p.id=t.first_post_id)';
+            $innerJoin[] = 'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'posts p ON (' . $joinOn . ')';
         }
 
         if ( count($where) > 0 )
