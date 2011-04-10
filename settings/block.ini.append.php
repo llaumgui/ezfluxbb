@@ -39,13 +39,11 @@ TTL=300
 Name=[ezFluxBB] Topics
 ManualAddingOfItems=disabled
 TTL=300
-
 CustomAttributes[]
 CustomAttributes[]=id_forums
 CustomAttributes[]=limit_topics
 CustomAttributes[]=limit_characters
 CustomAttributes[]=id_css
-
 ViewList[]
 ViewList[]=list_compact
 ViewList[]=list
