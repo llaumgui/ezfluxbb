@@ -68,7 +68,7 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
         }
 
         // Bad cookie
-        if ( !array_key_exists( 0, $cookie ) || sizeof($cookie) < 3 || intval($cookie[0]) <= 0 )
+        if ( !array_key_exists( 0, $cookie ) || sizeof($cookie) < 3 || intval($cookie[0]) <= 1 )
             return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
 
         $fluxbb_current_user= eZFunctionHandler::execute( 'ezfluxbb', 'current_user', array() );
