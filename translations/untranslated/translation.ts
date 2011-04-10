@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Discussions</source>
-        <translation>Discussions</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>go to last discussion</source>
@@ -78,6 +78,70 @@
     </message>
     <message>
         <source>by</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+
+<context>
+    <name>design/ezfluxbb/login_box</name>
+    <message>
+        <source>Loading</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+
+<context>
+    <name>design/ezfluxbb/loginbox/annonymous</name>
+    <message>
+        <source>No account yet?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identifiant:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Identification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to website</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+
+<context>
+    <name>design/ezfluxbb/loginbox/guest_full</name>
+    <message>
+        <source>Connected (e) under the identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last seen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New posts since last visit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent posts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark all topics as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My account</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
