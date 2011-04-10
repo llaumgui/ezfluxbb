@@ -41,6 +41,17 @@ $FunctionList['current_user'] = array(
     'parameters'            => array( )
 );
 
+$FunctionList['info'] = array(
+    'name'                  => 'info',
+    'operation_types'       => array( 'read' ),
+    'call_method'           => array(
+        'include_file'          => 'extension/ezfluxbb/classes/ezfluxbbfetchfonctions.php',
+        'class'                 => 'eZFluxBBFetchFonctions',
+        'method'            => 'getInfo'
+    ),
+    'parameter_type'        => 'standard',
+    'parameters'            => array( )
+);
 
 $FunctionList['stats'] = array(
     'name'                  => 'stats',

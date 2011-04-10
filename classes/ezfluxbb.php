@@ -128,6 +128,11 @@ class eZFluxBB
                             'cookie_seed'       => $cookie_seed,
                             'version'           => $this->fluxBBInfo['Version']
                         );
+        $this->fluxBBInfo['cookie_name'] = $config['cookie_name'];
+        $this->fluxBBInfo['cookie_domain'] = $config['cookie_domain'];
+        $this->fluxBBInfo['cookie_path'] = $config['cookie_path'];
+        $this->fluxBBInfo['cookie_secure'] = $config['cookie_secure'];
+        $this->fluxBBInfo['cookie_seed'] = $config['cookie_seed'];
     }
 
 

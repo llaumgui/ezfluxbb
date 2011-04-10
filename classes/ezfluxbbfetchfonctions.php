@@ -48,8 +48,21 @@ class eZFluxBBFetchFonctions
     {
         $eZFluxBB = eZFluxBB::instance();
 
-        $result = array( 'result' => $eZFluxBB->getCurrentUserInfo() );
-        return $result;
+        return  array( 'result' => $eZFluxBB->getCurrentUserInfo() );
+    }
+
+
+
+    /**
+     * Get informations about current FluxBB user
+     *
+     * @return array
+     */
+    function getInfo()
+    {
+        $eZFluxBB = eZFluxBB::instance();
+
+        return array( 'result' => $eZFluxBB->fluxBBInfo );
     }
 
 
