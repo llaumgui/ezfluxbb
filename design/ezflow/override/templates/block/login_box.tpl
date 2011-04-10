@@ -35,6 +35,6 @@
 
 </div>
 <script type="text/javascript">//<![CDATA[
-$(document).ready(function(){ldelim}$.ez('ezfluxbb::loginBox::full',{ldelim}{rdelim},function(data){ldelim}if(!data.error_text){ldelim}$('#ajaxloginbox_{$block.id}').replaceWith(data.content);{rdelim}{rdelim});{rdelim});
+$(document).ready(function(){ldelim}$.ez('ezfluxbb::loginBox',{ldelim}{rdelim},function(data){ldelim}if(!data.error_text){ldelim}$('#ajaxloginbox_{$block.id}').replaceWith(data.content);{rdelim}{rdelim});{rdelim});
 //]]></script>
 <!-- BLOCK: END -->

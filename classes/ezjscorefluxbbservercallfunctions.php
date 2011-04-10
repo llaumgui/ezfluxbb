@@ -71,10 +71,20 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
         if ( !array_key_exists( 0, $cookie ) || sizeof($cookie) < 3 || intval($cookie[0]) <= 1 )
             return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
 
-        $fluxbb_current_user= eZFunctionHandler::execute( 'ezfluxbb', 'current_user', array() );
-        $tpl->setVariable( 'fluxbb_current_user', $fluxbb_current_user );
         $tpl->setVariable( 'fluxbb_user_id', intval($cookie[0]) );
-        return   $tpl->fetch( "design:ezfluxbb/loginbox/guest_full.tpl" );
+
+        // Full version
+        if ( isset($args[0]) && $args[0] == 'full' )
+        {
+            $fluxbb_current_user= eZFunctionHandler::execute( 'ezfluxbb', 'current_user', array() );
+            $tpl->setVariable( 'fluxbb_current_user', $fluxbb_current_user );
+            return   $tpl->fetch( "design:ezfluxbb/loginbox/guest_full.tpl" );
+        }
+
+        return   $tpl->fetch( "design:ezfluxbb/loginbox/guest.tpl" );
+
+
+
     }
 }
 
