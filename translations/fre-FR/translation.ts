@@ -109,8 +109,8 @@
         <translation>Identification</translation>
     </message>
     <message>
-        <source>Connect to Fedora-fr</source>
-        <translation>Se connecter à Fedora-fr</translation>
+        <source>Connect to website</source>
+        <translation>Se connecter au site</translation>
     </message>
     <message>
         <source>Remember ?</source>
