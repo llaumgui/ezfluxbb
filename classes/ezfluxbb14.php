@@ -6,7 +6,7 @@
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.1
+// SOFTWARE RELEASE: 1.2
 // BUILD VERSION:
 // COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
@@ -29,7 +29,6 @@
 // ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 //
 
-
 /*! \file ezfluxbb14.php
 */
 
@@ -39,24 +38,6 @@
  */
 class eZFluxBB14 extends eZFluxBB
 {
-    /**
-     * Convert bbCode to HTML
-     *
-     * @param string &$str bbCode to convert
-     */
-    public function bbCode2HTML( &$str )
-    {
-    	global $re_list;
-
-        if ( !function_exists( 'do_bbcode' ) )
-            require_once PUN_ROOT . 'include/parser.php';
-        if ( !function_exists( 'pun_htmlspecialchars' ) )
-            require_once PUN_ROOT . 'include/functions.php';
-        if (!defined('UTF8'))
-            require_once PUN_ROOT . 'include/utf8/utf8.php';
-
-        $str = do_bbcode( $str );
-    }
 }
 
 ?>

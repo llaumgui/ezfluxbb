@@ -6,7 +6,7 @@
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.1
+// SOFTWARE RELEASE: 1.2
 // BUILD VERSION:
 // COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
@@ -29,7 +29,6 @@
 // ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 //
 
-
 /*! \file ezfluxbb12.php
 */
 
@@ -51,6 +50,64 @@ class eZFluxBB12 extends eZFluxBB
             require_once PUN_ROOT . 'include/parser.php';
         }
         $str = do_bbcode( $str );
+    }
+
+
+
+	/**
+     * Get informations about topics
+     *
+     * @param array $params
+     * @return array
+     */
+    public function getTopics( $params )
+    {
+        $db = eZFluxBBDB::instance();
+
+        $select =   't.id topic_id, t.subject topic_name, t.poster creator, t.num_replies, t.posted published, ' .
+                    't.last_post_id, t.last_post last_post_published, t.last_poster last_post_creator';
+        $leftJoin = array();
+        $innerJoin = array();
+        $where = array();
+
+        /* join groupe_id */
+        if ( $params['group_id'] )
+        {
+            $select .= ', f.id forum_id, f.forum_name';
+            $innerJoin[] = 'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'forums AS f ON f.id=t.forum_id';
+            $leftJoin[] = 'LEFT JOIN '.$this->fluxBBConfig['db_prefix'].'forum_perms AS fp ON (fp.forum_id=f.id AND fp.group_id=' . $params['group_id'] . ')';
+            $where[] = '(fp.read_forum IS NULL OR fp.read_forum=1)';
+            $where[] = 't.moved_to IS NULL';
+        }
+
+        /* join with post */
+        if ( $params['get_first_message'] )
+        {
+            $joinOn = 'p.topic_id=t.id AND p.posted=t.posted';
+            $select .= ', p.id post_id, p.message';
+            $innerJoin[] = 'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'posts p ON (' . $joinOn . ')';
+        }
+
+        if ( count($where) > 0 )
+        {
+            $where = ' AND ' . implode( ' AND ', $where) . ' ';
+        }
+        else
+        {
+            $where = '';
+        }
+
+        $topics = $db->arrayQuery(
+            'SELECT ' . $select . ' ' .
+            'FROM '.$this->fluxBBConfig['db_prefix'].'topics t ' .
+                implode( ' ', $innerJoin) . ' ' .
+                implode( ' ', $leftJoin) . ' ' .
+            'WHERE t.forum_id ' . $params['forum_id'] . ' ' .
+                $where . ' ' .
+            'ORDER BY ' . $params['sort_by'] .' ' .
+            'LIMIT ' . $params['offset'] . ', ' . $params['limit']);
+
+        return $topics;
     }
 }
 

@@ -35,4 +35,18 @@ Subdir=templates
 Match[type]=ezFluxBBTopics
 Match[view]=list_compact
 
+[block_ezFluxBBLoginBox_loginbox]
+Source=block/view/view.tpl
+MatchFile=block/login_box.tpl
+Subdir=templates
+Match[type]=ezFluxBBLoginBox
+Match[view]=loginbox
+
+[block_ezFluxBBLoginBox_loginbox_full]
+Source=block/view/view.tpl
+MatchFile=block/login_box_full.tpl
+Subdir=templates
+Match[type]=ezFluxBBLoginBox
+Match[view]=loginbox_full
+
 */ ?>

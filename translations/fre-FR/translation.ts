@@ -82,4 +82,68 @@
     </message>
 </context>
 
+<context>
+    <name>design/ezfluxbb/login_box</name>
+    <message>
+        <source>Loading</source>
+        <translation>Chargement</translation>
+    </message>
+</context>
+
+<context>
+    <name>design/ezfluxbb/loginbox/annonymous</name>
+    <message>
+        <source>No account yet?</source>
+        <translation>Pas encore de compte ?</translation>
+    </message>
+    <message>
+        <source>Identifiant:</source>
+        <translation>Identifiant :</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation>Mot de passe :</translation>
+    </message>
+    <message>
+        <source>Identification</source>
+        <translation>Identification</translation>
+    </message>
+    <message>
+        <source>Connect to Fedora-fr</source>
+        <translation>Se connecter à Fedora-fr</translation>
+    </message>
+    <message>
+        <source>Remember ?</source>
+        <translation>Se souvenir ?</translation>
+    </message>
+</context>
+
+<context>
+    <name>design/ezfluxbb/loginbox/guest_full</name>
+    <message>
+        <source>Connected (e) under the identity</source>
+        <translation>Connecté(e) sous l'identité</translation>
+    </message>
+    <message>
+        <source>Last seen</source>
+        <translation>Dernière visite</translation>
+    </message>
+    <message>
+        <source>New posts since last visit</source>
+        <translation>Nouveaux messages depuis la dernière visite</translation>
+    </message>
+    <message>
+        <source>Recent posts</source>
+        <translation>Messages récents</translation>
+    </message>
+    <message>
+        <source>Mark all topics as read</source>
+        <translation>Marquer toutes les discussions comme lues</translation>
+    </message>
+    <message>
+        <source>My account</source>
+        <translation>Mon compte</translation>
+    </message>
+</context>
+
 </TS>

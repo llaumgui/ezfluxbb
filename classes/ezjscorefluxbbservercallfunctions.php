@@ -5,11 +5,25 @@
 // Created on: <28 déc. 2010 14:51:22 llaumgui>
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-// SOFTWARE NAME: Fedora-Fr - eZP Base
-// SOFTWARE RELEASE: 5.0.0
-// COPYRIGHT NOTICE: Copyright (C) 2008-2010 Guillaume Kulakowski
-// SOFTWARE LICENSE:
+// SOFTWARE NAME: eZFluxBB
+// SOFTWARE RELEASE: 1.2
+// BUILD VERSION:
+// COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
+// SOFTWARE LICENSE: GNU General Public License v2.0
 // NOTICE: >
+//   This program is free software; you can redistribute it and/or
+//   modify it under the terms of version 2.0  of the GNU General
+//   Public License as published by the Free Software Foundation.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of version 2.0 of the GNU General
+//   Public License along with this program; if not, write to the Free
+//   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+//   MA 02110-1301, USA.
 //
 //
 // ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
@@ -40,7 +54,7 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
 
         // No cookie:
         if ( !array_key_exists($cookieName, $_COOKIE) )
-            return   $tpl->fetch( "design:ezfluxbb/loginbox_annonymous.tpl" );
+            return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
 
         // FluxBB >=  1.4.4
         if ( version_compare( $fluxVersion, '1.4.4') >= 0)
@@ -55,10 +69,12 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
 
         // Bad cookie
         if ( !array_key_exists( 0, $cookie ) || sizeof($cookie) < 3 || intval($cookie[0]) <= 0 )
-            return   $tpl->fetch( "design:ezfluxbb/loginbox_annonymous.tpl" );
+            return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
 
+        $fluxbb_current_user= eZFunctionHandler::execute( 'ezfluxbb', 'current_user', array() );
+        $tpl->setVariable( 'fluxbb_current_user', $fluxbb_current_user );
         $tpl->setVariable( 'fluxbb_user_id', intval($cookie[0]) );
-        return   $tpl->fetch( "design:ezfluxbb/loginbox_guest.tpl" );
+        return   $tpl->fetch( "design:ezfluxbb/loginbox/guest_full.tpl" );
     }
 }
 

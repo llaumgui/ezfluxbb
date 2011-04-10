@@ -6,7 +6,7 @@
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.1
+// SOFTWARE RELEASE: 1.2
 // BUILD VERSION:
 // COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
@@ -28,7 +28,6 @@
 //
 // ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 //
-
 
 /*! \file ezfluxbbdb.php
 */

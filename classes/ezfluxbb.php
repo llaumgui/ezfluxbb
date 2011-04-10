@@ -6,7 +6,7 @@
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.1
+// SOFTWARE RELEASE: 1.2
 // BUILD VERSION:
 // COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
@@ -29,7 +29,6 @@
 // ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 //
 
-
 /*! \file ezfluxbb.php
 */
 
@@ -42,7 +41,10 @@ class eZFluxBB
     protected $fluxBBUser = array(); // FluxBB user
     public $fluxBBConfig = array(); // FluxBB configurtation
     public $fluxBBInfo = array(); // Section FluxBBInfo of ezfluxbb.ini
-    protected $fluxBBCookie = array('user_id' => 1, 'password_hash' => 'Guest'); // User cookie
+    protected $fluxBBCookie = array( // User cookie
+    	'user_id' => 1,
+    	'password_hash' =>	'Guest'
+    );
 
 
     /**
@@ -51,7 +53,6 @@ class eZFluxBB
     protected function __construct()
     {
         $this->getConfig( $this->fluxBBConfig );
-
 
         /* Constant needed by FluxBB */
         define( 'PUN_ROOT', $this->fluxBBInfo['Path'] . '/' );
@@ -63,7 +64,7 @@ class eZFluxBB
 
 
 ######################################################################### System
-#
+
     /**
      * Instanciate an eZFluxBB object in terms of FluxBB version.
      *
@@ -134,7 +135,7 @@ class eZFluxBB
 
 
 ########################### FluxBB informations (stats, members, topics, etc...)
-#
+
     /**
      * Get informations about board stats
      *
@@ -234,12 +235,7 @@ class eZFluxBB
         /* join with post */
         if ( $params['get_first_message'] )
         {
-        	// Use 1.4.0 first_post_id and index
-            if ( version_compare( $this->fluxBBInfo['Version'], '1.4.0') >= 0)
-	             $joinOn = 'p.topic_id=t.id AND p.id=t.first_post_id';
-	        else
-	            $joinOn = 'p.topic_id=t.id AND p.posted=t.posted';
-
+            $joinOn = 'p.topic_id=t.id AND p.id=t.first_post_id';
             $select .= ', p.id post_id, p.message';
             $innerJoin[] = 'INNER JOIN '.$this->fluxBBConfig['db_prefix'].'posts p ON (' . $joinOn . ')';
         }
@@ -271,7 +267,7 @@ class eZFluxBB
 
 
 ################################################################# Authentication
-#
+
     /**
      * Get informations about current user.
      *
@@ -302,7 +298,19 @@ class eZFluxBB
         // If a cookie is set, we get the user_id and password hash from it
         if ( isset($_COOKIE[ $this->fluxBBConfig['cookie_name'] ]) )
         {
-            list($this->fluxBBCookie['user_id'], $this->fluxBBCookie['password_hash']) = @unserialize($_COOKIE[ $this->fluxBBConfig['cookie_name'] ]);
+            if ( version_compare( $this->fluxBBConfig['version'], '1.4.4') >= 0)
+            {
+                if ( preg_match('/^(\d+)\|([0-9a-fA-F]+)\|(\d+)\|([0-9a-fA-F]+)$/', $_COOKIE[ $this->fluxBBConfig['cookie_name'] ], $matches))
+	            {
+			        $this->fluxBBCookie['user_id'] = intval($matches[1]);
+			        $this->fluxBBCookie['password_hash'] = $matches[2];
+            	}
+            }
+            // FluxBB <=  1.4.3
+            else
+            {
+                list($this->fluxBBCookie['user_id'], $this->fluxBBCookie['password_hash']) = @unserialize($_COOKIE[ $this->fluxBBConfig['cookie_name'] ]);
+            }
         }
 
         if ($this->fluxBBCookie['user_id'] > 1)
@@ -322,12 +330,21 @@ class eZFluxBB
                 $fluxUser = $fluxUser[0];
             }
 
-            // If user authorisation failed
-            if ( !isset($fluxUser['id']) || md5($this->fluxBBConfig['cookie_seed'].$fluxUser['password']) !== $this->fluxBBCookie['password_hash'] )
+            if ( version_compare( $this->fluxBBConfig['version'], '1.4.4') >= 0)
             {
-                $this->flux_setcookie(0, $this->random_pass(8), $expire);
-                $this->set_default_user( $fluxUser );
+                $checkWith = hash_hmac('sha1', $fluxUser['password'], $this->fluxBBConfig['cookie_seed'].'_password_hash');
+            }
+            // FluxBB <=  1.4.3
+            else
+            {
+                $checkWith = md5($this->fluxBBConfig['cookie_seed'].$fluxUser['password']);
+            }
 
+            // If user authorisation failed
+
+            if ( !isset($fluxUser['id']) || $checkWith !== $this->fluxBBCookie['password_hash'] )
+            {
+                $this->set_default_user( $fluxUser );
                 return;
             }
 
@@ -409,55 +426,27 @@ class eZFluxBB
 
 
 
-    /**
-     * Define the FluxBB cookie
-     *
-     * @param int $user_id
-     * @param string $password_hash
-     * @param int $expire
-     */
-    private function flux_setcookie($user_id, $password_hash, $expire)
-    {
-        // Enable sending of a P3P header by removing // from the following line (try this if login is failing in IE6)
-        //    @header('P3P: CP="CUR ADM"');
-        if (version_compare(PHP_VERSION, '5.2.0', '>='))
-        {
-            setcookie(  $this->fluxBBConfig['cookie_name'],
-                        serialize(array($user_id, md5($this->fluxBBConfig['cookie_seed'].$password_hash))),
-                        $expire,
-                        $this->fluxBBConfig['cookie_path'],
-                        $this->fluxBBConfig['cookie_domain'],
-                        $this->fluxBBConfig['cookie_secure'],
-                        true );
-        }
-        else
-        {
-            setcookie(  $this->fluxBBConfig['cookie_name'],
-                        serialize(array($user_id, md5($this->fluxBBConfig['cookie_seed'].$password_hash))),
-                        $expire,
-                        $this->fluxBBConfig['cookie_path'] . '; HttpOnly',
-                        $this->fluxBBConfig['cookie_domain'],
-                        $this->fluxBBConfig['cookie_secure'] );
-        }
-    }
 
 
+########################################################################### Misc
 
     /**
-     * Generate a random password of length $len
+     * Convert bbCode to HTML
      *
-     * @param int $len
-     * @return string Password
+     * @param string &$str bbCode to convert
      */
-    private function random_pass($len)
+    public function bbCode2HTML( &$str )
     {
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    	global $re_list;
 
-        $password = '';
-        for ($i = 0; $i < $len; ++$i)
-            $password .= substr($chars, (mt_rand() % strlen($chars)), 1);
+        if ( !function_exists( 'do_bbcode' ) )
+            require_once PUN_ROOT . 'include/parser.php';
+        if ( !function_exists( 'pun_htmlspecialchars' ) )
+            require_once PUN_ROOT . 'include/functions.php';
+        if (!defined('UTF8'))
+            require_once PUN_ROOT . 'include/utf8/utf8.php';
 
-        return $password;
+        $str = do_bbcode( $str );
     }
 
 }

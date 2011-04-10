@@ -4,6 +4,17 @@
 AllowedTypes[]=ezFluxBBStats
 AllowedTypes[]=ezFluxBBOnline
 AllowedTypes[]=ezFluxBBTopics
+AllowedTypes[]=ezFluxBBLoginBox
+
+
+[ezFluxBBLoginBox]
+Name=[ezFluxBB] Login box
+ManualAddingOfItems=disabled
+CustomAttributes[]
+ViewList[]=loginbox
+ViewList[]=loginbox_full
+ViewName[loginbox]=Login box
+ViewName[loginbox_full]=Login box full with AJAX
 
 
 [ezFluxBBStats]
