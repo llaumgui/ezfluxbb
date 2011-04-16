@@ -259,7 +259,7 @@ class eZFluxBB
             'FROM '.$this->fluxBBConfig['db_prefix'].'topics t ' .
                 implode( ' ', $innerJoin) . ' ' .
                 implode( ' ', $leftJoin) . ' ' .
-            'WHERE t.forum_id ' . $params['forum_id'] . ' ' .
+            'WHERE t.id > 0 AND t.forum_id ' . $params['forum_id'] . ' ' .
                 $where . ' ' .
             'ORDER BY ' . $params['sort_by'] .' ' .
             'LIMIT ' . $params['offset'] . ', ' . $params['limit']);
