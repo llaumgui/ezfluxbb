@@ -6,7 +6,7 @@
 //
 // ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
 // SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.2
+// SOFTWARE RELEASE: 2.0
 // BUILD VERSION:
 // COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
 // SOFTWARE LICENSE: GNU General Public License v2.0
@@ -39,7 +39,13 @@
 class eZFluxBBDB
 {
 
-	public static $db_supported = array('mysql', 'mysql_innodb', 'mysqli', 'mysqli_innodb');
+	public static $db_supported = array(
+		'mysql',
+		'mysql_innodb',
+		'mysqli',
+		'mysqli_innodb'
+	);
+
 
 
     /**
@@ -49,26 +55,28 @@ class eZFluxBBDB
      */
     private function __construct( &$impl)
     {
-        /* Same DB */
+        // Same DB
         if ( $this->compareEz2FluxDB() )
         {
             eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish use the same database', 'eZFluxBBDB' );
             $impl = eZDB::instance();
         }
-        /* Different DB */
+        // Different DB
         else
         {
             eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish don\'t use the same database', 'eZFluxBBDB'  );
-            $ezFluxIni = eZFluxBB::instance();
-            $params = array('server'                        => $ezFluxIni->fluxBBConfig['db_host'],
-                            'user'                          => $ezFluxIni->fluxBBConfig['db_username'],
-                            'password'                      => $ezFluxIni->fluxBBConfig['db_password'],
-                            'database'                      => $ezFluxIni->fluxBBConfig['db_name'],
-                            'use_persistent_connection'     => $ezFluxIni->fluxBBConfig['p_connect'],
-                            'show_errors'                   => true,
-                           );
+            $ezFluxBB = eZFluxBB::instance();
+            $params = array(
+            	'server' => $ezFluxBB->Config['db_host'],
+                'user' => $ezFluxBB->Config['db_username'],
+                'password' => $ezFluxBB->Config['db_password'],
+                'database' => $ezFluxBB->Config['db_name'],
+                'use_persistent_connection' => $ezFluxBB->Config['p_connect'],
+                'show_errors' => true,
+            );
+
             // Remove extended information like _innodb
-            $dbType = explode( '_', $ezFluxIni->fluxBBConfig['db_type'] );
+            $dbType = explode( '_', $ezFluxBB->Config['db_type'] );
             $dbType = $dbType[0];
 
             $impl = eZDB::instance( 'ez'.$dbType, $params, true );
@@ -84,27 +92,26 @@ class eZFluxBBDB
      */
     private function compareEz2FluxDB()
     {
-        $ezini = eZINI::instance( "site.ini" );
-        $ezFluxIni = eZFluxBB::instance();
+        $eZFluxBB = eZFluxBB::instance();
+        $ezDBIni = eZINI::instance( "site.ini" )->variableMulti( 'DatabaseSettings', array(
+    		'Server'  => 'Server',
+            'User' => 'User',
+            'Password' => 'Password',
+            'Database' => 'Database'
+        ) );
 
-        $ezDBIni = $ezini->variableMulti( 'DatabaseSettings', array(
-                                            'Server'        => 'Server',
-                                            'User'          => 'User',
-                                            'Password'      => 'Password',
-                                            'Database'      => 'Database'
-                                ) );
+        // Test if DB is supported
+        if ( !in_array( $eZFluxBB->Config['db_type'], self::$db_supported ) )
+            throw new Exception('FluxBB database implementation not supported in eZFluxBB: ' . $eZFluxBB->Config['db_type']);
 
-        if ( !in_array( $ezFluxIni->fluxBBConfig['db_type'], self::$db_supported ) )
-            throw new Exception('FluxBB database implementation not supported in eZFluxBB: ' . $ezFluxIni->fluxBBConfig['db_type']);
-
-        if ( $ezDBIni['Server'] == $ezFluxIni->fluxBBConfig['db_host']
-          && $ezDBIni['User'] == $ezFluxIni->fluxBBConfig['db_username']
-          && $ezDBIni['Password'] == $ezFluxIni->fluxBBConfig['db_password']
-          && $ezDBIni['Database'] == $ezFluxIni->fluxBBConfig['db_name']
+        if ( $ezDBIni['Server'] == $eZFluxBB->Config['db_host']
+          && $ezDBIni['User'] == $eZFluxBB->Config['db_username']
+          && $ezDBIni['Password'] == $eZFluxBB->Config['db_password']
+          && $ezDBIni['Database'] == $eZFluxBB->Config['db_name']
         )
         {
             $db = eZDB::instance();
-            if ( strtolower($db->charset()) == strtolower($ezFluxIni->fluxBBConfig['db_charset']) )
+            if ( strtolower($db->charset()) == strtolower($eZFluxBB->Charset) )
             {
                 eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish are 2 differents charset !', 'eZFluxBBDB' );
                 return false;
@@ -121,7 +128,7 @@ class eZFluxBBDB
      *
      * @return eZDBInterface
      */
-    static function instance()
+    public static function instance()
     {
         $globalsKey = "eZFluxBBDBGlobalInstance";
         $globalsIsLoadedKey = "eZFluxBBDBGlobalIsLoaded";
@@ -133,6 +140,18 @@ class eZFluxBBDB
             $GLOBALS[$globalsIsLoadedKey] = true;
         }
         return $GLOBALS[$globalsKey];
+    }
+
+
+
+    /**
+     * Set a FluxBB query with path prefix, etc...
+     * @param string $query
+     */
+    public static function setQuery($query)
+    {
+        $eZFluxBB = eZFluxBB::instance();
+        return str_replace('%db_prefix%', $eZFluxBB->Config['db_prefix'], $query);
     }
 
 }

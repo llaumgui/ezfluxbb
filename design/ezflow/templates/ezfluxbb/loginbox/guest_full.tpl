@@ -8,7 +8,7 @@
     </li>
     <li>
         <span>{'Last seen'|i18n( 'design/ezfluxbb/loginbox/guest_full' )}</span>
-        {$fluxbb_current_user.last_visit|related_datetime('r_FluxBB')}
+        {$fluxbb_current_user.last_visit|l10n(shortdatetime)}
     </li>
 </ul>
 

@@ -1,5 +1,6 @@
-* XXX YYY ZZ 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.2
+* Sun Apr 17 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.2
 - Add eZJSCoreCallServer
+- Add eZFlow login bloc
 
 * Mon Jan 31 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.1
 - Compatible FluxBB 1.2 and 1.4
