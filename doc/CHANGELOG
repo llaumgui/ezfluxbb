@@ -1,0 +1,14 @@
+* XXX YYY ZZ 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.2
+- Add eZJSCoreCallServer
+
+* Mon Jan 31 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.1
+- Compatible FluxBB 1.2 and 1.4
+- Optimisation
+- Fix issues
+- eZFlow support with 3 blocks
+
+* Wed Jul 21 2009 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.0.1
+- Fix notice on php 5.3
+
+* Sun Sep 07 2008 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.0
+- Initial release
