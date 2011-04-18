@@ -18,7 +18,7 @@ Installing:
 
 
 Configuration:
-- Configuring eZFluxBB :
-  See extension/eZfluxbb/settings/eZfluxbb.ini.append.php for options.
-- And policy for Anonymous role :
-  ezjscore : call : FunctionList( ezfluxbb )
+1. Configuring eZFluxBB :
+   See extension/eZfluxbb/settings/eZfluxbb.ini.append.php for options.
+2. And policy for Anonymous role :
+   ezjscore : call : FunctionList( ezfluxbb )

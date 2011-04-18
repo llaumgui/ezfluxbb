@@ -1,3 +1,7 @@
+* Sun Apr XX 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 2.0
+- Upstream only! Abandonment of official support for FluxBB 1.2
+- All queries are now in ezfluxbb.ini. Override it for your FluxBB's hack or for support of the old version.
+
 * Sun Apr 17 2011 Guillaume Kulakowski <guillaume DOT kulakowski AT fedoraproject DOT org> - 1.2
 - Add eZJSCoreCallServer
 - Add eZFlow login bloc

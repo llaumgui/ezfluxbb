@@ -33,6 +33,7 @@ UserOnline[Inser]=INSERT INTO %db_prefix%online (user_id, ident, logged) VALUES(
 UserOnline[Update]=UPDATE %db_prefix%online SET logged=%d WHERE user_id=%d
 UserOnline[UpdateAnonym]=UPDATE %db_prefix%online SET logged=%d WHERE ident='%s'
 
+
 [QueriesTopics]
 # Queries related to Topics fetches
 
