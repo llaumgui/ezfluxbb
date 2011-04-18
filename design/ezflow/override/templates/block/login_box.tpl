@@ -1,3 +1,7 @@
+{ezscript_require( array(
+    'ezjsc::jquery',
+    'ezjsc::jqueryio',
+) )}
 <!-- BLOCK: START -->
 <div class="block-type-ezfluxbb-listtopic block-type-ezfluxbb-listtopic-compact">
 

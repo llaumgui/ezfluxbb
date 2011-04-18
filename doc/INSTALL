@@ -2,7 +2,7 @@
 
 
 Requirements:
-- eZ Publish 4.0.x
+- eZ Publish 4.4.x
 
 
 Installing:
@@ -20,3 +20,5 @@ Installing:
 Configuration:
 - Configuring eZFluxBB :
   See extension/eZfluxbb/settings/eZfluxbb.ini.append.php for options.
+- And policy for Anonymous role :
+  ezjscore : call : FunctionList( ezfluxbb )
