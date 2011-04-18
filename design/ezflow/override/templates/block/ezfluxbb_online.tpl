@@ -28,7 +28,7 @@
     {set $nbUser = count($fluxbbOnline.list)|dec()}
     <ul class="list">
         {foreach $fluxbbOnline.list as $key => $user}
-        <li><a href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/profile.php?id={$user.user_id}" title="{"Profile of %user"|i18n("esign/ezfluxbb/stats",,hash('%user', $user.ident))}">{$user.ident}</a>{if $key|lt($nbUser)}, {/if}</li>
+        <li><a href="{ezini( 'FluxBBInfo', 'BoardURL', 'ezfluxbb.ini' )}/profile.php?id={$user.user_id}" title="{"Profile of %user"|i18n("design/ezfluxbb/stats",,hash('%user', $user.ident))}">{$user.ident}</a>{if $key|lt($nbUser)}, {/if}</li>
         {/foreach}
     </ul>
     {/if}

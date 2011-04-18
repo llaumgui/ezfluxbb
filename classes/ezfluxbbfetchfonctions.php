@@ -139,6 +139,9 @@ class eZFluxBBFetchFonctions
         $eZFluxBB = eZFluxBB::instance();
         $db = eZFluxBBDB::instance();
 
+        $limit = (int) $limit;
+        $offset = (int) $offset;
+
         /*
          * Sort_by
          */
