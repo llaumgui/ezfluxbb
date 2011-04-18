@@ -234,12 +234,13 @@ class eZFluxBB
             {
 		        $userCookie['user_id'] = intval($matches[1]);
 		        $userCookie['password_hash'] = $matches[2];
+		        $userCookie['expiration_time'] = $matches[3];
         	}
         }
         // FluxBB <=  1.4.3
         else
         {
-            list($userCookie['user_id'], $userCookie['password_hash']) = @unserialize($_COOKIE[ $eZFluxBB->Config['cookie_name'] ]);
+            list($userCookie['user_id'], $userCookie['password_hash'], $userCookie['expiration_time']) = @unserialize($_COOKIE[ $eZFluxBB->Config['cookie_name'] ]);
         }
         return $userCookie;
     }

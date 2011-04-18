@@ -56,22 +56,13 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
         if ( !array_key_exists($cookieName, $_COOKIE) )
             return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
 
-        // FluxBB >=  1.4.4
-        if ( version_compare( $fluxVersion, '1.4.4') >= 0)
-        {
-             $cookie = explode( '|', $_COOKIE[$cookieName] );
-        }
-        // FluxBB <=  1.4.3
-        else
-        {
-            $cookie = unserialize( $_COOKIE[$cookieName] );
-        }
+        $cookie = eZFluxBB::cookie2Array();
 
         // Bad cookie
-        if ( !array_key_exists( 0, $cookie ) || sizeof($cookie) < 3 || intval($cookie[0]) <= 1 )
+        if ( !array_key_exists( 'user_id', $cookie ) || sizeof($cookie) < 3 || intval($cookie['user_id']) <= 1 )
             return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
 
-        $tpl->setVariable( 'fluxbb_user_id', intval($cookie[0]) );
+        $tpl->setVariable( 'fluxbb_user_id', intval($cookie['user_id']) );
 
         // Full version
         if ( isset($args[0]) && $args[0] == 'full' )
@@ -82,9 +73,6 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
         }
 
         return   $tpl->fetch( "design:ezfluxbb/loginbox/guest.tpl" );
-
-
-
     }
 }
 
