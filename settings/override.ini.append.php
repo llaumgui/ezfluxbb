@@ -1,4 +1,4 @@
-<?php /*
+<?php /* #?ini charset="utf-8"?
 
 [block_ezFluxBBStats_ezFluxBBStats]
 Source=block/view/view.tpl
