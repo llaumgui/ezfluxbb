@@ -1,0 +1,64 @@
+<?php
+// This array contains the database schema
+$schema = array (
+  'ezfluxbbpreferences' => 
+  array (
+    'name' => 'ezpreferences',
+    'fields' => 
+    array (
+      'id' => 
+      array (
+        'type' => 'auto_increment',
+        'default' => false,
+      ),
+      'name' => 
+      array (
+        'length' => 100,
+        'type' => 'varchar',
+        'default' => NULL,
+      ),
+      'fluxbb_user_id' => 
+      array (
+        'length' => 11,
+        'type' => 'int',
+        'not_null' => '1',
+        'default' => 0,
+      ),
+      'value' => 
+      array (
+        'type' => 'longtext',
+        'default' => false,
+      ),
+    ),
+    'indexes' => 
+    array (
+      'PRIMARY' => 
+      array (
+        'type' => 'primary',
+        'fields' => 
+        array (
+          0 => 'id',
+        ),
+      ),
+      'ezfluxbbpreferences_name' => 
+      array (
+        'type' => 'non-unique',
+        'fields' => 
+        array (
+          0 => 'name',
+        ),
+      ),
+      'ezfluxbbpreferences_fluxbb_user_id_idx' => 
+      array (
+        'type' => 'non-unique',
+        'fields' => 
+        array (
+          0 => 'fluxbb_user_id',
+          1 => 'name',
+        ),
+      ),
+    ),
+  )
+);
+
+?>
