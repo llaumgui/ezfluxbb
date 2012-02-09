@@ -1,50 +1,28 @@
 <?php
-//
-// Definition of eZFluxBBDB class
-//
-// Created on: <01-Sep-2008 19:00:00 llaumgui>
-//
-// ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-// SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.3
-// BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
-// SOFTWARE LICENSE: GNU General Public License v2.0
-// NOTICE: >
-//   This program is free software; you can redistribute it and/or
-//   modify it under the terms of version 2.0  of the GNU General
-//   Public License as published by the Free Software Foundation.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of version 2.0 of the GNU General
-//   Public License along with this program; if not, write to the Free
-//   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//   MA 02110-1301, USA.
-//
-//
-// ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-//
+/**
+ * File containing the eZFluxBBDB class
+ *
+ * @version //autogentag//
+ * @package EZFluxBB
+ * @copyright Copyright (C) 2008-2012 Guillaume Kulakowski and contributors
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0
+ */
 
-/*! \file ezfluxbbdb.php
-*/
-
-/*!
-  \class eZFluxBBDB ezfluxbbdb.php
-  \brief Interconnection between eZ Publish and FluxBB databases
+/**
+ * The eZFluxBBDB provide interconnection between eZ Publish and FluxBB databases
+ *
+ * @package EZFluxBB
+ * @version //autogentag//
  */
 class eZFluxBBDB
 {
 
-	public static $db_supported = array(
-		'mysql',
-		'mysql_innodb',
-		'mysqli',
-		'mysqli_innodb'
-	);
+    public static $db_supported = array(
+        'mysql',
+        'mysql_innodb',
+        'mysqli',
+        'mysqli_innodb'
+    );
 
 
 
@@ -67,7 +45,7 @@ class eZFluxBBDB
             eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish don\'t use the same database', 'eZFluxBBDB'  );
             $ezFluxBB = eZFluxBB::instance();
             $params = array(
-            	'server' => $ezFluxBB->Config['db_host'],
+                'server' => $ezFluxBB->Config['db_host'],
                 'user' => $ezFluxBB->Config['db_username'],
                 'password' => $ezFluxBB->Config['db_password'],
                 'database' => $ezFluxBB->Config['db_name'],
@@ -94,7 +72,7 @@ class eZFluxBBDB
     {
         $eZFluxBB = eZFluxBB::instance();
         $ezDBIni = eZINI::instance( "site.ini" )->variableMulti( 'DatabaseSettings', array(
-    		'Server'  => 'Server',
+            'Server'  => 'Server',
             'User' => 'User',
             'Password' => 'Password',
             'Database' => 'Database'
@@ -102,7 +80,9 @@ class eZFluxBBDB
 
         // Test if DB is supported
         if ( !in_array( $eZFluxBB->Config['db_type'], self::$db_supported ) )
+        {
             throw new Exception('FluxBB database implementation not supported in eZFluxBB: ' . $eZFluxBB->Config['db_type']);
+        }
 
         if ( $ezDBIni['Server'] == $eZFluxBB->Config['db_host']
           && $ezDBIni['User'] == $eZFluxBB->Config['db_username']
@@ -111,7 +91,7 @@ class eZFluxBBDB
         )
         {
             $db = eZDB::instance();
-            if ( strtolower($db->charset()) == strtolower($eZFluxBB->Charset) )
+            if ( strtolower( $db->charset() ) == strtolower( $eZFluxBB->Charset ) )
             {
                 eZDebugSetting::writeNotice( 'eZFluxBBDB', 'FluxBB and eZ Publish are 2 differents charset !', 'eZFluxBBDB' );
                 return false;
@@ -146,12 +126,13 @@ class eZFluxBBDB
 
     /**
      * Set a FluxBB query with path prefix, etc...
+     *
      * @param string $query
      */
     public static function setQuery($query)
     {
         $eZFluxBB = eZFluxBB::instance();
-        return str_replace('%db_prefix%', $eZFluxBB->Config['db_prefix'], $query);
+        return str_replace( '%db_prefix%', $eZFluxBB->Config['db_prefix'], $query );
     }
 
 }

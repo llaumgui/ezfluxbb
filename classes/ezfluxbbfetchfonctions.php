@@ -1,40 +1,18 @@
 <?php
-//
-// Definition of eZFluxBBFetchFonctions class
-//
-// Created on: <01-Sep-2008 19:00:00 llaumgui>
-//
-// ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-// SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.3
-// BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
-// SOFTWARE LICENSE: GNU General Public License v2.0
-// NOTICE: >
-//   This program is free software; you can redistribute it and/or
-//   modify it under the terms of version 2.0  of the GNU General
-//   Public License as published by the Free Software Foundation.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of version 2.0 of the GNU General
-//   Public License along with this program; if not, write to the Free
-//   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//   MA 02110-1301, USA.
-//
-//
-// ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-//
+/**
+ * File containing the eZFluxBBFetchFonctions class
+ *
+ * @version //autogentag//
+ * @package EZFluxBB
+ * @copyright Copyright (C) 2008-2012 Guillaume Kulakowski and contributors
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0
+ */
 
-/*! \file ezfluxbbfetchfonctions.php
-*/
-
-/*!
-  \class eZFluxBBFetchFonctions ezfluxbbfetchfonctions.php
-  \brief Fetch functionsd for eZFluxBB
+/**
+ * The eZFluxBBFetchFonctions provide fetch functions for eZFluxBB
+ *
+ * @package EZFluxBB
+ * @version //autogentag//
  */
 class eZFluxBBFetchFonctions
 {
@@ -75,10 +53,10 @@ class eZFluxBBFetchFonctions
         $eZFluxBB = eZFluxBB::instance();
         $db = eZFluxBBDB::instance();
 
-        $stats = $db->arrayQuery( eZFluxBBDB::setQuery($eZFluxBB->Queries['Stats']) );
-        $lastMember = $db->arrayQuery( eZFluxBBDB::setQuery($eZFluxBB->Queries['LastMember']) );
+        $stats = $db->arrayQuery( eZFluxBBDB::setQuery( $eZFluxBB->Queries['Stats'] ) );
+        $lastMember = $db->arrayQuery( eZFluxBBDB::setQuery( $eZFluxBB->Queries['LastMember'] ) );
 
-        return array( 'result' => array_merge( $stats[0], array('last_member' => $lastMember[0]) ) );
+        return array( 'result' => array_merge( $stats[0], array( 'last_member' => $lastMember[0] ) ) );
     }
 
 
@@ -100,9 +78,9 @@ class eZFluxBBFetchFonctions
             'list'      => array()
         );
 
-        $online = $db->arrayQuery( eZFluxBBDB::setQuery($eZFluxBB->Queries['Online']) );
+        $online = $db->arrayQuery( eZFluxBBDB::setQuery( $eZFluxBB->Queries['Online'] ) );
 
-        $onlineArray['total'] = count($online);
+        $onlineArray['total'] = count( $online );
         foreach( $online as $user )
         {
             if ( $user['user_id'] > 1)
@@ -125,7 +103,7 @@ class eZFluxBBFetchFonctions
      * Get topics information function of argument
      *
      * @param string $forum_id_filter_type
-     * @param mixed$ forum_id_filter_array
+     * @param mixed $forum_id_filter_array
      * @param integer $limit
      * @param integer $offset
      * @param array $sort_by
@@ -147,17 +125,23 @@ class eZFluxBBFetchFonctions
          */
         $sortingString = 't.posted';
         $sortOrder = true; // true is ascending
-        if ( is_array($sort_by) )
+        if ( is_array( $sort_by ) )
         {
-            if ( array_key_exists(0, $sort_by) && !empty($sort_by[0]) )
+            if ( array_key_exists( 0, $sort_by ) && !empty( $sort_by[0] ) )
+            {
                 $sortingString = $sort_by[0];
-            if ( array_key_exists(1, $sort_by) && is_bool($sort_by[1]) )
+            }
+            if ( array_key_exists( 1, $sort_by ) && is_bool( $sort_by[1] ) )
+            {
                 $sortOrder = $sort_by[1];
+            }
         }
         else
         {
             if ( !empty($sort_by ) )
+            {
                 $sortingString = $sort_by;
+            }
         }
         $sortingOrder = $sortOrder ? ' ASC' : ' DESC';
 
@@ -169,11 +153,17 @@ class eZFluxBBFetchFonctions
         if ( $forum_id_filter_array )
         {
             if ( $forum_id_filter_type == 'exclude' )
+            {
                 $sortingForumID = 'NOT IN';
+            }
             if ( is_array( $forum_id_filter_array ) )
-                $sortingForumID .= ' (' . implode( ', ', $forum_id_filter_array) . ')';
+            {
+                $sortingForumID .= ' (' . implode( ', ', $forum_id_filter_array ) . ')';
+            }
             else
+            {
                 $sortingForumID .= ' (' . $forum_id_filter_array . ')';
+            }
         }
         else
         {
@@ -181,7 +171,7 @@ class eZFluxBBFetchFonctions
         }
 
 
-        $select = 'SELECT ' . eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['Select']);
+        $select = 'SELECT ' . eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['Select'] );
         $leftJoin = array();
         $innerJoin = array();
         $where = '';
@@ -190,30 +180,32 @@ class eZFluxBBFetchFonctions
         // join groupe_id
         if ( $group_id )
         {
-            $select .= ', ' . eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['GroupID']['Select']);
-            $innerJoin[] = eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['GroupID']['InnerJoin']);
-            $leftJoin[] = sprintf( eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['GroupID']['LeftJoin']), $group_id );
-            $whereArray[] = eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['GroupID']['Where']);
+            $select .= ', ' . eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['GroupID']['Select'] );
+            $innerJoin[] = eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['GroupID']['InnerJoin'] );
+            $leftJoin[] = sprintf( eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['GroupID']['LeftJoin'] ), $group_id );
+            $whereArray[] = eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['GroupID']['Where'] );
         }
 
         // join with post
         if ( $get_first_message )
         {
-            $select .= ', ' . eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['GetFirstMessage']['Select']);
-            $innerJoin[] = eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['GetFirstMessage']['InnerJoin']);
+            $select .= ', ' . eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['GetFirstMessage']['Select'] );
+            $innerJoin[] = eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['GetFirstMessage']['InnerJoin'] );
         }
 
         // Build WHERE
-        if ( count($whereArray) > 0 )
-            $where = ' AND ' . implode( ' AND ', $whereArray) . ' ';
+        if ( count( $whereArray ) > 0 )
+        {
+            $where = ' AND ' . implode( ' AND ', $whereArray ) . ' ';
+        }
 
         // Build query
         $topics = $db->arrayQuery(
             $select . ' ' .
-            'FROM ' . eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['From']) . ' ' .
-                implode( ' ', $innerJoin) . ' ' .
-                implode( ' ', $leftJoin) . ' ' .
-            'WHERE ' . sprintf( eZFluxBBDB::setQuery($eZFluxBB->Queries['Topics']['Where']), $sortingForumID ) . ' ' .
+            'FROM ' . eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['From'] ) . ' ' .
+                implode( ' ', $innerJoin ) . ' ' .
+                implode( ' ', $leftJoin ) . ' ' .
+            'WHERE ' . sprintf( eZFluxBBDB::setQuery( $eZFluxBB->Queries['Topics']['Where'] ), $sortingForumID ) . ' ' .
                 $where . ' ' .
             'ORDER BY ' . $sortingString . ' ' . $sortingOrder .' ' .
             'LIMIT ' . $offset . ', ' . $limit

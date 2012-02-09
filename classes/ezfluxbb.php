@@ -1,40 +1,18 @@
 <?php
-//
-// Definition of eZFluxBB class
-//
-// Created on: <01-Sep-2008 19:00:00 llaumgui>
-//
-// ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-// SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.3
-// BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
-// SOFTWARE LICENSE: GNU General Public License v2.0
-// NOTICE: >
-//   This program is free software; you can redistribute it and/or
-//   modify it under the terms of version 2.0  of the GNU General
-//   Public License as published by the Free Software Foundation.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of version 2.0 of the GNU General
-//   Public License along with this program; if not, write to the Free
-//   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//   MA 02110-1301, USA.
-//
-//
-// ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-//
+/**
+ * File containing the eZFluxBB class
+ *
+ * @version //autogentag//
+ * @package EZFluxBB
+ * @copyright Copyright (C) 2008-2012 Guillaume Kulakowski and contributors
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0
+ */
 
-/*! \file ezfluxbb.php
-*/
-
-/*!
-  \class eZFluxBB ezfluxbb.php
-  \brief FluxBB functions in eZ Publish
+/**
+ * The eZFluxBB class provide FluxBB functions in eZ Publish
+ *
+ * @package EZFluxBB
+ * @version //autogentag//
  */
 class eZFluxBB
 {
@@ -44,8 +22,8 @@ class eZFluxBB
     public $Queries = array(); // Path of FluxBB sources
     public $User = array(); // FluxBB user
     protected $UserCookie = array( // User cookie
-    	'user_id' => 1,
-    	'password_hash' =>	'Guest'
+        'user_id' => 1,
+        'password_hash' =>	'Guest'
     );
     public $Version = false; // Version of FluxBB
 
@@ -67,8 +45,10 @@ class eZFluxBB
         $this->Version = $eZFluxBBIni->variable( 'FluxBBInfo', 'Version' );
 
         // Test if config is Good
-        if ( count(explode( '.', $this->Version)) != 2 )
+        if ( count( explode( '.', $this->Version ) ) != 2 )
+        {
             eZDebugSetting::writeError( 'eZFluxBB', 'Set a right full version like "x.y.z"', 'eZFluxBBDB' );
+        }
 
         // Get config from FluxBB
         $this->getConfig( $this->Config );
@@ -82,7 +62,7 @@ class eZFluxBB
 
 
 
-######################################################################### System
+/* ****************************************************************** System */
 
     /**
      * Instanciate an eZFluxBB object in terms of FluxBB version.
@@ -105,14 +85,14 @@ class eZFluxBB
     /**
      * Get configuration of FluxBB
      *
-     * @param array &$config
+     * @param array $config
      */
     private function getConfig( &$config )
     {
-        require $this->Path . '/config.php';
+        include $this->Path . '/config.php';
 
         $config = array(
-        	'db_type' => $db_type,
+            'db_type' => $db_type,
             'db_host' => $db_host,
             'db_name' => $db_name,
             'db_username' => $db_username,
@@ -131,7 +111,7 @@ class eZFluxBB
 
 
 
-################################################################# Authentication
+/* ********************************************************** Authentication */
 
     /**
      * Get informations about current user.
@@ -152,7 +132,7 @@ class eZFluxBB
     /**
      * Get FluxBB cookie
      *
-     * @param array &$user
+     * @param array $user
      */
     protected function checkCookie( &$user )
     {
@@ -169,50 +149,58 @@ class eZFluxBB
         {
             // Check if there's a user with the user ID and password hash from the cookie
             $db = eZFluxBBDB::instance();
-            $user = $db->arrayQuery( sprintf( eZFluxBBDB::setQuery($this->Queries['User']), intval($this->UserCookie['user_id']) ) );
+            $user = $db->arrayQuery( sprintf( eZFluxBBDB::setQuery( $this->Queries['User'] ), intval( $this->UserCookie['user_id'] ) ) );
 
-            if ( array_key_exists( 0, $user) )
+            if ( array_key_exists( 0, $user ) )
+            {
                 $user = $user[0];
+            }
 
             /*
              * Check password
              */
             // FluxBB >= 1.4.4
-            if ( version_compare( $this->Version, '1.4.4') >= 0)
-                $checkWith = hash_hmac('sha1', $user['password'], $this->Config['cookie_seed'].'_password_hash');
+            if ( version_compare( $this->Version, '1.4.4' ) >= 0)
+            {
+                $checkWith = hash_hmac( 'sha1', $user['password'], $this->Config['cookie_seed'].'_password_hash' );
+            }
             // FluxBB <=  1.4.3
             else
-                $checkWith = md5($this->Config['cookie_seed'].$user['password']);
+            {
+                $checkWith = md5( $this->Config['cookie_seed'].$user['password'] );
+            }
 
             // If user authorisation failed
             if ( !isset($user['id']) || $checkWith !== $this->UserCookie['password_hash'] )
             {
-                $this->set_default_user( $user );
+                $this->setDefaultUser( $user );
                 return;
             }
 
-            if ( array_key_exists('save_pass', $user) && $user['save_pass'] == '0' )
+            if ( array_key_exists( 'save_pass', $user ) && $user['save_pass'] == '0' )
+            {
                 $expire = 0;
+            }
 
             // Define this if you want this visit to affect the online list and the users last visit data
-            if (!defined('PUN_QUIET_VISIT'))
+            if ( !defined( 'PUN_QUIET_VISIT' ) )
             {
                 // Update the online list
                 if (!$user['logged'])
                 {
-                    $db->query( sprintf( eZFluxBBDB::setQuery($this->Queries['UserOnline']['Inser']), $user['id'], $db->escapeString($user['username']), $now ) );
+                    $db->query( sprintf( eZFluxBBDB::setQuery( $this->Queries['UserOnline']['Inser'] ), $user['id'], $db->escapeString( $user['username'] ), $now ) );
                 }
                 else
                 {
                     $idle_sql = ($user['idle'] == '1') ? ', idle=0' : '';
-                    $db->query( sprintf( eZFluxBBDB::setQuery($this->Queries['UserOnline']['Update']), $now.$idle_sql, $user['id'] ) );
+                    $db->query( sprintf( eZFluxBBDB::setQuery( $this->Queries['UserOnline']['Update'] ), $now.$idle_sql, $user['id'] ) );
                 }
             }
             $user['is_guest'] = false;
         }
         else
         {
-            $this->set_default_user( $user );
+            $this->setDefaultUser( $user );
         }
     }
 
@@ -220,6 +208,7 @@ class eZFluxBB
 
     /**
      * Get cookies informations
+     *
      * @return array
      */
     public static function cookie2Array()
@@ -228,19 +217,19 @@ class eZFluxBB
         $userCookie = array();
 
         // FluxBB >= 1.4.4
-        if ( version_compare( $eZFluxBB->Version, '1.4.4') >= 0)
+        if ( version_compare( $eZFluxBB->Version, '1.4.4' ) >= 0 )
         {
-            if ( preg_match('/^(\d+)\|([0-9a-fA-F]+)\|(\d+)\|([0-9a-fA-F]+)$/', $_COOKIE[ $eZFluxBB->Config['cookie_name'] ], $matches))
+            if ( preg_match( '/^(\d+)\|([0-9a-fA-F]+)\|(\d+)\|([0-9a-fA-F]+)$/', $_COOKIE[ $eZFluxBB->Config['cookie_name'] ], $matches ) )
             {
-		        $userCookie['user_id'] = intval($matches[1]);
-		        $userCookie['password_hash'] = $matches[2];
-		        $userCookie['expiration_time'] = $matches[3];
-        	}
+                $userCookie['user_id'] = intval( $matches[1] );
+                $userCookie['password_hash'] = $matches[2];
+                $userCookie['expiration_time'] = $matches[3];
+            }
         }
         // FluxBB <=  1.4.3
         else
         {
-            list($userCookie['user_id'], $userCookie['password_hash'], $userCookie['expiration_time']) = @unserialize($_COOKIE[ $eZFluxBB->Config['cookie_name'] ]);
+            list( $userCookie['user_id'], $userCookie['password_hash'], $userCookie['expiration_time'] ) = @unserialize( $_COOKIE[ $eZFluxBB->Config['cookie_name'] ] );
         }
         return $userCookie;
     }
@@ -250,16 +239,16 @@ class eZFluxBB
     /**
      * Initialize a guest user
      *
-     * @param array &$fluxUser
+     * @param array $fluxUser
      */
-    private function set_default_user( &$fluxUser )
+    private function setDefaultUser( &$fluxUser )
     {
         $remote_addr =  eZSys::serverVariable( 'REMOTE_ADDR', true );
 
         // Fetch guest user
         $db = eZFluxBBDB::instance();
-        $fluxUser = $db->arrayQuery('SELECT u.*, g.*, o.logged FROM '.$this->Config['db_prefix'].'users AS u INNER JOIN '.$this->Config['db_prefix'].'groups AS g ON u.group_id=g.g_id LEFT JOIN '.$this->Config['db_prefix'].'online AS o ON o.ident=\''.$remote_addr.'\' WHERE u.id=1');
-        if ( array_key_exists( 0, $fluxUser) )
+        $fluxUser = $db->arrayQuery( 'SELECT u.*, g.*, o.logged FROM '.$this->Config['db_prefix'].'users AS u INNER JOIN '.$this->Config['db_prefix'].'groups AS g ON u.group_id=g.g_id LEFT JOIN '.$this->Config['db_prefix'].'online AS o ON o.ident=\''.$remote_addr.'\' WHERE u.id=1' );
+        if ( array_key_exists( 0, $fluxUser ) )
         {
             $fluxUser = $fluxUser[0];
         }
@@ -267,11 +256,11 @@ class eZFluxBB
         // Update online list
         if (!$fluxUser['logged'])
         {
-            $db->query( sprintf( eZFluxBBDB::setQuery($this->Queries['UserOnline']['Inser']), 1, $db->escapeString($remote_addr), time() ) );
+            $db->query( sprintf( eZFluxBBDB::setQuery( $this->Queries['UserOnline']['Inser'] ), 1, $db->escapeString( $remote_addr ), time() ) );
         }
         else
         {
-            $db->query( sprintf( eZFluxBBDB::setQuery($this->Queries['UserOnline']['UpdateAnonym']), time(), $db->escapeString($remote_addr) ) );
+            $db->query( sprintf( eZFluxBBDB::setQuery( $this->Queries['UserOnline']['UpdateAnonym'] ), time(), $db->escapeString( $remote_addr ) ) );
         }
 
         $fluxUser['is_guest'] = true;
@@ -281,23 +270,29 @@ class eZFluxBB
 
 
 
-########################################################################### Misc
+/* ********************************************************************* Misc */
 
     /**
      * Convert bbCode to HTML
      *
-     * @param string &$str bbCode to convert
+     * @param string $str bbCode to convert
      */
     public static function bbCode2HTML( &$str )
     {
-    	global $re_list;
+        global $re_list;
 
         if ( !function_exists( 'do_bbcode' ) )
-            require_once PUN_ROOT . 'include/parser.php';
+        {
+            include_once PUN_ROOT . 'include/parser.php';
+        }
         if ( !function_exists( 'pun_htmlspecialchars' ) )
-            require_once PUN_ROOT . 'include/functions.php';
-        if (!defined('UTF8'))
-            require_once PUN_ROOT . 'include/utf8/utf8.php';
+        {
+            include_once PUN_ROOT . 'include/functions.php';
+        }
+        if ( !defined( 'UTF8' ) )
+        {
+            include_once PUN_ROOT . 'include/utf8/utf8.php';
+        }
 
         $str = do_bbcode( $str );
     }
