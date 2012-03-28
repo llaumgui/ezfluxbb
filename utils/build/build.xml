@@ -1,13 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ezfluxbb" default="ci" basedir="../..">
+    <!--
+        __________________________________________________________________ ChangeLog
+        build XML based on version 1.1
+
+        ChangeLog:
+            - Version 1.1:
+               - Add QATools
+               - Add JSLint
+               - Add CSSLint
+            - Version 1.0:
+                - 1.0: First release
+    -->
+
+
+
+
 
     <!--
-        ______________________________________________________________ Variables
+        __________________________________________________________________ Setup
     -->
-    <property name="sourcedir" value="${project.basedir}" />
-    <property name="builddir" value="${project.basedir}/../build" />
-    <property name="zipdir" value="${project.basedir}/.." />
+    <!-- Path -->
+    <property name="dir.source" value="${project.basedir}" />
+    <property name="dir.build" value="${project.basedir}/../build" />
+    <property name="dir.zip" value="${project.basedir}/.." />
     <property name="version" value="null" />
+
+    <!-- Command -->
+    <property name="qatools.php.cmd" value="/opt/qatools/bin/qatools-php.php" />
+    <property name="qatools.php.options" value="" />
+    <property name="qatools.php.options.include" value="" />
+    <property name="qatools.php.options.exclude" value="-e '@tests@'" />
+
+    <!-- QA : JSLint -->
+    <property name="jslint.cmd" value="jslint" />
+    <property name="jslint.tmp.alljs" value="/tmp/jenkins_jslint_${phing.project.name}_all.js" />
+    <property name="jslint.rules" value="--browser --predef $,document,jQuery, --sloppy" />
+
+    <!-- QA : CSSLint -->
+    <property name="csslint.cmd" value="csslint" />
+    <property name="csslint.tmp.allcss" value="/tmp/jenkins_csslint_${phing.project.name}_css.css" />
+    <property name="csslint.rules.errors" value="adjoining-classes,box-model,box-sizing,compatible-vendor-prefixes,display-property-grouping,duplicate-background-images,duplicate-properties,empty-rules,errors,fallback-colors,floats,font-faces,font-sizes,gradients,ids,import,important,known-properties,outline-none,overqualified-elements,qualified-headings,regex-selectors,rules-count,shorthand,text-indent,unique-headings,universal-selector,vendor-prefix,zero-units" />
+    <property name="csslint.rules.warnings" value="" />
+
+    <!-- QA : Patternset -->
+    <patternset id="pattern.php">
+        <include name="**/*.php"/>
+        <exclude name="tests/*.php"/>
+    </patternset>
+
+    <patternset id="pattern.css">
+        <include name="**/*.css"/>
+    </patternset>
+
+    <patternset id="pattern.js">
+        <include name="**/*.js"/>
+    </patternset>
+
+
 
 
 
@@ -19,29 +69,40 @@
         depends="clean,qa"
     />
 
-    <target name="clean" description="Vide les répertoires d'artefacts">
-        <delete dir="${builddir}/api" />
-        <delete dir="${builddir}/code-browser" />
-        <delete dir="${builddir}/coverage" />
-        <delete dir="${builddir}/log" />
-        <delete dir="${builddir}/pdepend" />
 
-        <mkdir dir="${builddir}/api" />
-        <mkdir dir="${builddir}/code-browser" />
-        <mkdir dir="${builddir}/coverage" />
-        <mkdir dir="${builddir}/logs" />
-        <mkdir dir="${builddir}/pdepend" />
+    <target name="clean" description="Vide les répertoires d'artefacts">
+        <delete dir="${dir.build}/api" />
+        <delete dir="${dir.build}/log" />
+        <delete dir="${dir.build}/pdepend" />
+        <delete dir="${dir.build}/tests" />
+
+        <mkdir dir="${dir.build}/api" />
+        <mkdir dir="${dir.build}/logs" />
+        <mkdir dir="${dir.build}/pdepend" />
+        <mkdir dir="${dir.build}/tests" />
     </target>
 
 
     <target name="qa" description="Launch all QA tools">
+        <!-- PHP -->
         <phingcall target="pdepend" />
         <phingcall target="phpmd" />
         <phingcall target="phpcpd" />
         <phingcall target="phpcs" />
+
+        <!-- QATools -->
+        <phingcall target="qatools-php" />
+
+        <!-- Lint -->
+        <!-- phingcall target="jslint" / -->
+        <!--phingcall target="csslint" / -->
+
+        <!-- Doc and stats -->
         <phingcall target="phploc" />
         <phingcall target="doxygen" />
     </target>
+
+
 
 
 
@@ -49,43 +110,127 @@
         _______________________________________________________________ QA Tools
     -->
     <target name="pdepend">
-        <phpdepend file="${sourcedir}">
-            <logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
-            <logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
-            <logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
+        <phpdepend>
+            <fileset dir="${dir.source}">
+                <patternset refid="pattern.php" />
+            </fileset>
+            <logger type="jdepend-xml" outfile="${dir.build}/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${dir.build}/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${dir.build}/pdepend/overview-pyramid.svg" />
         </phpdepend>
     </target>
 
+
     <target name="phpmd">
-        <phpmd file="${sourcedir}">
-            <formatter type="xml" outfile="${builddir}/phpmd.xml" />
-         </phpmd>
+        <phpmd>
+            <fileset dir="${dir.source}">
+                <patternset refid="pattern.php" />
+            </fileset>
+            <formatter type="xml" outfile="${dir.build}/phpmd.xml" />
+        </phpmd>
     </target>
 
+
     <target name="phpcpd">
-        <phpcpd file="${sourcedir}">
-            <formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml"/>
+        <phpcpd>
+            <fileset dir="${dir.source}">
+                <patternset refid="pattern.php" />
+            </fileset>
+            <formatter type="pmd" outfile="${dir.build}/logs/pmd-cpd.xml"/>
         </phpcpd>
     </target>
 
+
     <target name="phpcs">
         <phpcodesniffer standard="Zeta">
-            <fileset dir="${sourcedir}">
-                <include name="**/*.php"/>
+            <fileset dir="${dir.source}">
+                <patternset refid="pattern.php" />
             </fileset>
-            <formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml"/>
+            <formatter type="checkstyle" outfile="${dir.build}/logs/checkstyle.xml"/>
         </phpcodesniffer>
     </target>
 
-    <target name="phploc">
-        <exec logoutput="true" dir="${sourcedir}" escape="false" command="phploc
-            --log-csv '${builddir}/logs/phploc.csv'
-            '${sourcedir}'" />
+
+    <target name="qatools-php">
+        <exec logoutput="true" dir="${dir.source}" command="${qatools.php.cmd}
+            ${qatools.php.options.include}
+            ${qatools.php.options.exclude}
+            ${qatools.php.options}
+            -o ${dir.build}/tests/qa-php-file.xml
+            ${dir.source}" escape="false" />
     </target>
 
-    <target name="doxygen">
-        <exec logoutput="true" dir="${sourcedir}" command="doxygen 'utils/build/DoxyFile'" />
+    <target name="phploc">
+        <exec logoutput="true" dir="${dir.source}" escape="false" command="phploc
+            --log-csv '${dir.build}/logs/phploc.csv'
+            '${dir.source}'" />
     </target>
+
+
+    <target name="doxygen">
+        <exec logoutput="true" dir="${dir.source}" command="doxygen 'utils/build/DoxyFile'" />
+    </target>
+
+
+
+
+
+    <!--
+        _____________________________________________________________________ JSLint
+    -->
+    <target name="jslint">
+        <foreach param="filename" absparam="jslint_absfilename" target="_jslint_createFilesetText">
+            <fileset dir="${dir.source}">
+                <patternset refid="pattern.js" />
+            </fileset>
+        </foreach>
+
+        <loadfile property="jslint_all_js" file="${jslint.tmp.alljs}"/>
+
+        <exec command="${jslint.cmd} ${jslint.rules}
+                     --report xml
+                     ${jslint_all_js} > ${dir.build}/build/logs/jslint.xml"
+            passthru="true" />
+
+        <delete file="${jslint.tmp.alljs}" />
+    </target>
+
+
+    <target name="_jslint_createFilesetText" >
+        <echo file="${jslint.tmp.alljs}" append="true">${jslint_absfilename} </echo>
+    </target>
+
+
+
+
+
+    <!--
+        _____________________________________________________________________ CSSLint
+    -->
+    <target name="csslint">
+        <foreach param="filename" absparam="csslint_absfilename" target="_csslint_createFilesetText">
+            <fileset dir="${dir.source}">
+                <patternset refid="pattern.css" />
+            </fileset>
+        </foreach>
+
+        <loadfile property="csslint_all_css" file="${csslint.tmp.allcss}"/>
+
+        <exec command="${csslint.cmd}
+                     --format=lint-xml
+                     --errors=${csslint.rules.errors}
+                     ${csslint_all_css} > ${dir.build}/logs/csslint.xml"
+            passthru="true" />
+
+        <delete file="${csslint.tmp.allcss}" />
+    </target>
+
+
+    <target name="_csslint_createFilesetText" >
+        <echo file="${csslint.tmp.allcss}" append="true">${csslint_absfilename} </echo>
+    </target>
+
+
 
 
 
@@ -102,15 +247,16 @@
         </if>
     </target>
 
+
     <target name="_build-archive">
         <echo>Build version ${version}</echo>
 
-        <delete dir="${zipdir}/${phing.project.name}-${version}" />
-        <delete dir="${zipdir}/${phing.project.name}-${version}.zip" />
-        <mkdir dir="${zipdir}/${phing.project.name}-${version}" />
+        <delete dir="${dir.zip}/${phing.project.name}-${version}" />
+        <delete dir="${dir.zip}/${phing.project.name}-${version}.zip" />
+        <mkdir dir="${dir.zip}/${phing.project.name}-${version}" />
 
-        <copy todir="${zipdir}/${phing.project.name}-${version}" >
-            <fileset dir="${sourcedir}">
+        <copy todir="${dir.zip}/${phing.project.name}-${version}" >
+            <fileset dir="${dir.source}">
                 <include name="*.php" />
                 <include name="*.png" />
                 <include name="doc/*" />
@@ -123,18 +269,19 @@
             </fileset>
         </foreach>
 
-        <zip destfile="${zipdir}/${phing.project.name}-${version}.zip"
+        <zip destfile="${dir.zip}/${phing.project.name}-${version}.zip"
             prefix="${phing.project.name}/">
-            <fileset dir="${zipdir}/${phing.project.name}-${version}">
+            <fileset dir="${dir.zip}/${phing.project.name}-${version}">
                 <include name="**/**" />
             </fileset>
         </zip>
 
-        <delete dir="${zipdir}/${phing.project.name}-${version}" />
+        <delete dir="${dir.zip}/${phing.project.name}-${version}" />
     </target>
 
+
     <target name="_build-set-header" description="Set tag @version in header">
-        <exec logoutput="true" dir="${zipdir}/${phing.project.name}-${version}" command="
+        <exec logoutput="true" dir="${dir.zip}/${phing.project.name}-${version}" command="
             sed -i 's/\/\/autogentag\/\//${version}/g' ${absfilename};" />
     </target>
 
