@@ -53,7 +53,7 @@
     <!-- QA : Patternset -->
     <patternset id="pattern.php">
         <include name="**/*.php"/>
-        <exclude name="tests/*.php"/>
+        <exclude name="**/*ini.append.php" />
     </patternset>
 
     <patternset id="pattern.css">
