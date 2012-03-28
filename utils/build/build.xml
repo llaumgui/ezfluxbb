@@ -37,7 +37,7 @@
     <property name="qatools.eztpl.cmd" value="/opt/qatools/bin/qatools-eztpl.php" />
     <property name="qatools.eztpl.options" value="" />
     <property name="qatools.eztpl.options.include" value="" />
-    <property name="qatools.eztpl.options.exclude" value="'" />
+    <property name="qatools.eztpl.options.exclude" value="" />
 
     <!-- QA : JSLint -->
     <property name="jslint.cmd" value="jslint" />
