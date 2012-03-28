@@ -26,11 +26,18 @@
     <property name="dir.zip" value="${project.basedir}/.." />
     <property name="version" value="null" />
 
-    <!-- Command -->
+    <!-- QA : QATools PHP -->
     <property name="qatools.php.cmd" value="/opt/qatools/bin/qatools-php.php" />
     <property name="qatools.php.options" value="" />
     <property name="qatools.php.options.include" value="" />
     <property name="qatools.php.options.exclude" value="-e '@tests@'" />
+
+    <!-- QA : QATools eZTpl -->
+    <property name="qatools.eztpl.ezpublish.dir" value="/opt/ezpublish" />
+    <property name="qatools.eztpl.cmd" value="/opt/qatools/bin/qatools-eztpl.php" />
+    <property name="qatools.eztpl.options" value="" />
+    <property name="qatools.eztpl.options.include" value="" />
+    <property name="qatools.eztpl.options.exclude" value="'" />
 
     <!-- QA : JSLint -->
     <property name="jslint.cmd" value="jslint" />
@@ -92,6 +99,7 @@
 
         <!-- QATools -->
         <phingcall target="qatools-php" />
+        <phingcall target="qatools-eztpl" />
 
         <!-- Lint -->
         <!-- phingcall target="jslint" / -->
@@ -156,9 +164,20 @@
             ${qatools.php.options.include}
             ${qatools.php.options.exclude}
             ${qatools.php.options}
-            -o ${dir.build}/tests/qa-php-file.xml
+            -o ${dir.build}/tests/qatools-php.xml
             ${dir.source}" escape="false" />
     </target>
+
+
+    <target name="qatools-eztpl">
+        <exec logoutput="true" dir="${qatools.eztpl.ezpublish.dir}" command="${qatools.eztpl.cmd}
+            ${qatools.eztpl.option.include}
+            ${qatools.eztpl.option.exclude}
+            ${qatools.eztpl.option}
+            -o ${dir.build}/tests/qatools-eztpl.xml
+            ${dir.source}" escape="false" />
+    </target>
+
 
     <target name="phploc">
         <exec logoutput="true" dir="${dir.source}" escape="false" command="phploc
