@@ -1,51 +1,31 @@
 <?php
-//
-// Definition of ezjscoreFluxBBServerCallFunctions class
-//
-// Created on: <28 déc. 2010 14:51:22 llaumgui>
-//
-// ## BEGIN COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-// SOFTWARE NAME: eZFluxBB
-// SOFTWARE RELEASE: 1.3
-// BUILD VERSION:
-// COPYRIGHT NOTICE: Copyright (c) 2008-2011 Guillaume Kulakowski and contributors
-// SOFTWARE LICENSE: GNU General Public License v2.0
-// NOTICE: >
-//   This program is free software; you can redistribute it and/or
-//   modify it under the terms of version 2.0  of the GNU General
-//   Public License as published by the Free Software Foundation.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of version 2.0 of the GNU General
-//   Public License along with this program; if not, write to the Free
-//   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//   MA 02110-1301, USA.
-//
-//
-// ## END COPYRIGHT, LICENSE AND WARRANTY NOTICE ##
-//
+/**
+ * File containing the ezjscoreFluxBBServerCallFunctions class
+ *
+ * @version //autogentag//
+ * @package EZFluxBB
+ * @copyright Copyright (C) 2008-2012 Guillaume Kulakowski and contributors
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0
+ */
 
-/*! \file ezjscorefluxbbservercallfunctions.php
-*/
-
-/*!
-  \class ezjscoreFluxBBServerCallFunctions ezjscorefluxbbservercallfunctions.php
-  \brief eZJSCore server call used by Fedora-Fr
-*/
+/**
+ * The eZFluxBBPreferences provide eZJSCore server call.
+ *
+ * @package EZFluxBB
+ * @version //autogentag//
+ */
 class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
 {
+
     /**
      * LoginBox
+     *
      * @param array $args
      */
     public static function loginBox( $args )
     {
         $tpl = eZTemplate::factory();
-        $eZFluxBBINI = eZINI::instance( 'ezfluxbb.ini');
+        $eZFluxBBINI = eZINI::instance( 'ezfluxbb.ini' );
         $fluxVersion = $eZFluxBBINI->variable( 'FluxBBInfo', 'Version' );
         $cookieName = $eZFluxBBINI->variable( 'FluxBBInfo', 'CookieName' );
         $boardURL = $eZFluxBBINI->variable( 'FluxBBInfo', 'BoardURL' );
@@ -53,16 +33,20 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
         $tpl->setVariable( 'board_url', $boardURL );
 
         // No cookie:
-        if ( !array_key_exists($cookieName, $_COOKIE) )
+        if ( !array_key_exists( $cookieName, $_COOKIE ) )
+        {
             return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
+        }
 
         $cookie = eZFluxBB::cookie2Array();
 
         // Bad cookie
-        if ( !array_key_exists( 'user_id', $cookie ) || sizeof($cookie) < 3 || intval($cookie['user_id']) <= 1 )
+        if ( !array_key_exists( 'user_id', $cookie ) || sizeof( $cookie ) < 3 || intval( $cookie['user_id'] ) <= 1 )
+        {
             return   $tpl->fetch( "design:ezfluxbb/loginbox/annonymous.tpl" );
+        }
 
-        $tpl->setVariable( 'fluxbb_user_id', intval($cookie['user_id']) );
+        $tpl->setVariable( 'fluxbb_user_id', intval( $cookie['user_id'] ) );
 
         // Full version
         if ( isset($args[0]) && $args[0] == 'full' )

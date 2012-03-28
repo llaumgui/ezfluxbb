@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ezfluxbb" default="ci" basedir="../..">
+
+    <!--
+        ______________________________________________________________ Variables
+    -->
+    <property name="sourcedir" value="${project.basedir}" />
+    <property name="builddir" value="${project.basedir}/../build" />
+    <property name="zipdir" value="${project.basedir}/.." />
+    <property name="version" value="null" />
+
+
+
+    <!--
+        ____________________________________________________________________ CI
+    -->
+    <target name="ci"
+        description="Continuous integration main task"
+        depends="clean,qa"
+    />
+
+    <target name="clean" description="Vide les répertoires d'artefacts">
+        <delete dir="${builddir}/api" />
+        <delete dir="${builddir}/code-browser" />
+        <delete dir="${builddir}/coverage" />
+        <delete dir="${builddir}/log" />
+        <delete dir="${builddir}/pdepend" />
+
+        <mkdir dir="${builddir}/api" />
+        <mkdir dir="${builddir}/code-browser" />
+        <mkdir dir="${builddir}/coverage" />
+        <mkdir dir="${builddir}/logs" />
+        <mkdir dir="${builddir}/pdepend" />
+    </target>
+
+
+    <target name="qa" description="Launch all QA tools">
+        <phingcall target="pdepend" />
+        <phingcall target="phpmd" />
+        <phingcall target="phpcpd" />
+        <phingcall target="phpcs" />
+        <phingcall target="phploc" />
+        <phingcall target="doxygen" />
+    </target>
+
+
+
+    <!--
+        _______________________________________________________________ QA Tools
+    -->
+    <target name="pdepend">
+        <phpdepend file="${sourcedir}">
+            <logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
+            <logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
+            <logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
+        </phpdepend>
+    </target>
+
+    <target name="phpmd">
+        <phpmd file="${sourcedir}">
+            <formatter type="xml" outfile="${builddir}/phpmd.xml" />
+         </phpmd>
+    </target>
+
+    <target name="phpcpd">
+        <phpcpd file="${sourcedir}">
+            <formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
+
+    <target name="phpcs">
+        <phpcodesniffer standard="Zeta">
+            <fileset dir="${sourcedir}">
+                <include name="**/*.php"/>
+            </fileset>
+            <formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml"/>
+        </phpcodesniffer>
+    </target>
+
+    <target name="phploc">
+        <exec logoutput="true" dir="${sourcedir}" escape="false" command="phploc
+            --log-csv '${builddir}/logs/phploc.csv'
+            '${sourcedir}'" />
+    </target>
+
+    <target name="doxygen">
+        <exec logoutput="true" dir="${sourcedir}" command="doxygen 'utils/build/DoxyFile'" />
+    </target>
+
+
+
+    <!--
+        _______________________________________________________________ Delivery
+    -->
+    <target name="build" description="Zip builder">
+        <if><equals arg1="${version}" arg2="null" /><then>
+            <echo message='The version is not set ! Use "phing build  -Dversion=foo"' />
+            </then>
+        <else>
+            <phingcall target="_build-archive" />
+            </else>
+        </if>
+    </target>
+
+    <target name="_build-archive">
+        <echo>Build version ${version}</echo>
+
+        <delete dir="${zipdir}/${phing.project.name}-${version}" />
+        <delete dir="${zipdir}/${phing.project.name}-${version}.zip" />
+        <mkdir dir="${zipdir}/${phing.project.name}-${version}" />
+
+        <copy todir="${zipdir}/${phing.project.name}-${version}" >
+            <fileset dir="${sourcedir}">
+                <include name="*.php" />
+                <include name="*.png" />
+                <include name="doc/*" />
+            </fileset>
+        </copy>
+
+        <foreach param="filename" absparam="absfilename" target="_build-set-header">
+            <fileset dir=".">
+                <include name="*.php"/>
+            </fileset>
+        </foreach>
+
+        <zip destfile="${zipdir}/${phing.project.name}-${version}.zip"
+            prefix="${phing.project.name}/">
+            <fileset dir="${zipdir}/${phing.project.name}-${version}">
+                <include name="**/**" />
+            </fileset>
+        </zip>
+
+        <delete dir="${zipdir}/${phing.project.name}-${version}" />
+    </target>
+
+    <target name="_build-set-header" description="Set tag @version in header">
+        <exec logoutput="true" dir="${zipdir}/${phing.project.name}-${version}" command="
+            sed -i 's/\/\/autogentag\/\//${version}/g' ${absfilename};" />
+    </target>
+
+</project>
