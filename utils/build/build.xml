@@ -171,9 +171,9 @@
 
     <target name="qatools-eztpl">
         <exec logoutput="true" dir="${qatools.eztpl.ezpublish.dir}" command="${qatools.eztpl.cmd}
-            ${qatools.eztpl.option.include}
-            ${qatools.eztpl.option.exclude}
-            ${qatools.eztpl.option}
+            ${qatools.eztpl.options.include}
+            ${qatools.eztpl.options.exclude}
+            ${qatools.eztpl.options}
             -o ${dir.build}/tests/qatools-eztpl.xml
             ${dir.source}" escape="false" />
     </target>
