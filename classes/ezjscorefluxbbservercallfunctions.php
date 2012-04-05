@@ -26,7 +26,6 @@ class ezjscoreFluxBBServerCallFunctions extends ezjscServerFunctions
     {
         $tpl = eZTemplate::factory();
         $eZFluxBBINI = eZINI::instance( 'ezfluxbb.ini' );
-        $fluxVersion = $eZFluxBBINI->variable( 'FluxBBInfo', 'Version' );
         $cookieName = $eZFluxBBINI->variable( 'FluxBBInfo', 'CookieName' );
         $boardURL = $eZFluxBBINI->variable( 'FluxBBInfo', 'BoardURL' );
 
