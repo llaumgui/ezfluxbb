@@ -1,4 +1,4 @@
-eZ FluxBB 1.3 (2011/04/19)
+eZ FluxBB 1.3 (2012/06/04)
 --------------------------
  - Support upstream only! Abandonment of official support for FluxBB 1.2
  - All queries are now in ezfluxbb.ini. Override it for your FluxBB's hack or for support of the old version.
