@@ -23,7 +23,7 @@
     <!-- Path -->
     <property name="dir.source" value="${project.basedir}" />
     <property name="dir.build" value="${project.basedir}/../build" />
-    <property name="dir.zip" value="${project.basedir}/.." />
+    <property name="dir.tar" value="${project.basedir}/.." />
     <property name="version" value="null" />
 
     <!-- QA : QATools PHP -->
@@ -256,7 +256,7 @@
     <!--
         _______________________________________________________________ Delivery
     -->
-    <target name="build" description="Zip builder">
+    <target name="build" description="Archive builder">
         <if><equals arg1="${version}" arg2="null" /><then>
             <echo message='The version is not set ! Use "phing build  -Dversion=foo"' />
             </then>
@@ -270,37 +270,42 @@
     <target name="_build-archive">
         <echo>Build version ${version}</echo>
 
-        <delete dir="${dir.zip}/${phing.project.name}-${version}" />
-        <delete dir="${dir.zip}/${phing.project.name}-${version}.zip" />
-        <mkdir dir="${dir.zip}/${phing.project.name}-${version}" />
+        <delete dir="${dir.tar}/${phing.project.name}-${version}" />
+        <delete dir="${dir.tar}/${phing.project.name}-${version}.tar.gz" />
+        <mkdir dir="${dir.tar}/${phing.project.name}-${version}" />
 
-        <copy todir="${dir.zip}/${phing.project.name}-${version}" >
+        <copy todir="${dir.tar}/${phing.project.name}-${version}" >
             <fileset dir="${dir.source}">
-                <include name="*.php" />
-                <include name="*.png" />
-                <include name="doc/*" />
+                <include name="**/*.php" />
+                <include name="design/**"/>
+                <include name="doc/*"/>
+                <include name="**.*dba"/>
+                <include name="**.*ts"/>
+                <include name="extension.xml"/>
             </fileset>
         </copy>
 
         <foreach param="filename" absparam="absfilename" target="_build-set-header">
             <fileset dir=".">
-                <include name="*.php"/>
+                <include name="**/*.php"/>
+                <include name="extension.xml"/>
             </fileset>
         </foreach>
 
-        <zip destfile="${dir.zip}/${phing.project.name}-${version}.zip"
+        <tar destfile="${dir.tar}/${phing.project.name}-${version}.tar.gz"
+            compression="gzip"
             prefix="${phing.project.name}/">
-            <fileset dir="${dir.zip}/${phing.project.name}-${version}">
+            <fileset dir="${dir.tar}/${phing.project.name}-${version}">
                 <include name="**/**" />
             </fileset>
-        </zip>
+        </tar>
 
-        <delete dir="${dir.zip}/${phing.project.name}-${version}" />
+        <delete dir="${dir.tar}/${phing.project.name}-${version}" />
     </target>
 
 
     <target name="_build-set-header" description="Set tag @version in header">
-        <exec logoutput="true" dir="${dir.zip}/${phing.project.name}-${version}" command="
+        <exec logoutput="true" dir="${dir.tar}/${phing.project.name}-${version}" command="
             sed -i 's/\/\/autogentag\/\//${version}/g' ${absfilename};" />
     </target>
 
