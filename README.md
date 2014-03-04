@@ -11,8 +11,4 @@ What eZFlux doesn't do
 ======================
 * Synchronization of FluxBB/eZ Publish users
 
-Continuous integration
-======================
-eZFluxBB is under continuous integration: [http://ci.llaumgui.com/job/eZFluxBB/](http://ci.llaumgui.com/job/eZFluxBB/)
-
 ![eZ Publish Certified Developer](http://www.llaumgui.com/images/ezcertdev.png)
